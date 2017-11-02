@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\StoreUpload;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -93,6 +94,23 @@ class FileController extends Controller
         return $this->returnJson();
     }
 
+    /**
+     * 修改图片上传信息
+     *
+     * @param StoreUpload $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(StoreUpload $request)
+    {
+        return $this->returnJson();
+    }
+
+    /**
+     * 文件下载
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
     public function download(Request $request)
     {
         return response()->download('.' . trim($request->input('file'), '.'));

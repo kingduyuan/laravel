@@ -21,5 +21,6 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/file/list', 'FileController@list')->name('admin.file.list');
     Route::post('/file/upload', 'FileController@upload')->name('admin.file.upload');
     Route::post('/file/delete', 'FileController@delete')->name('admin.file.delete');
+    Route::post('/file/update', 'FileController@update')->name('admin.file.update');
     Route::get('/file/download', 'FileController@download')->name('admin.file.download');
 });

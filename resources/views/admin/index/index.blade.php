@@ -50,52 +50,47 @@
         </div>
     </div>
 
-    <div class="modal fade" id="EditFileModal" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document" style="width:90%;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i
-                                class="fa fa-times"></i></button>
-                    <h4 class="modal-title" id="myModalLabel">File: </h4>
-                </div>
-                <div class="modal-body p0">
-                    <div class="row m0">
-                        <div class="col-xs-8 col-sm-8 col-md-8">
-                            <div class="fileObject">
-
+    <div class="modal fade" id="update-upload-modal" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <form action="{{ url('/admin/file/upload') }}" method="post" id="update-form">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <h4 class="modal-title" id="model-title">{{ trans('admin.file') }}: </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="fileObject"></div>
                             </div>
-                        </div>
-                        <div class="col-xs-4 col-sm-4 col-md-4">
-                            <input type="hidden" name="file_id" value="0">
-                            <div class="form-group">
-                                <label for="filename">File Name</label>
-                                <input class="form-control" placeholder="File Name" name="filename" type="text" readonly
-                                       value="">
-                            </div>
-                            <div class="form-group">
-                                <label for="url">URL</label>
-                                <input class="form-control" placeholder="URL" name="url" type="text" readonly value="">
-                            </div>
-                            <div class="form-group">
-                                <label for="caption">Label</label>
-                                <input class="form-control" placeholder="Caption" name="caption" type="text" value=""
-                                       readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="public">Is Public ?</label>
-                                <div class="Switch Ajax Round On" style="vertical-align:top;margin-left:10px;">
-                                    <div class="Toggle"></div>
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <input type="hidden" name="id" id="upload-id" value="">
+                                <div class="form-group">
+                                    <label for="upload-name"> {{ trans('admin.fileName') }} </label>
+                                    <input class="form-control" type="text" name="name" id="upload-name" placeholder="{{ trans('admin.fileName') }}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-url">{{ trans('admin.fileUrl') }}</label>
+                                    <input class="form-control" type="text" id="upload-url" placeholder="{{ trans('admin.fileUrl') }}"  readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-title">{{ trans('admin.fileTitle') }}</label>
+                                    <input class="form-control" type="text" name="title" id="upload-title" placeholder="{{ trans('admin.fileTitle') }}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="public"> {{ trans('admin.filePublic') }} </label>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-info" id="update-upload-but">{{ trans('admin.update') }}</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('admin.close') }}</button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <a class="btn btn-success" id="downFileBtn" href="">Download</a>
-                    <button type="button" class="btn btn-danger" id="delFileBtn">Delete</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
@@ -105,7 +100,7 @@
     <script>
         $.ajaxSetup({
             headers: {
-                "X-CSRF-TOKEN": $("meta[name=\"csrf-token\"]").attr("content")
+                "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
             }
         });
 
@@ -121,7 +116,12 @@
                         window.location.href = '{{ url('admin/file/download')  }}?file=' + value.url;
                     },
                     updateValue: function (value) {
-
+                        $("#upload-id").val(value.id);
+                        $("#upload-title").val(value.title);
+                        $("#upload-name").val(value.name);
+                        $("#upload-url").val(value.url);
+                        $("#modal-title").val("{{ trans('admin.file') }}: " + value.title);
+                        $("#update-upload-modal").modal();
                     },
                     deleteValue: function (value) {
                         var self = this;
@@ -188,6 +188,35 @@
             $("#closeDZ1").on("click", function () {
                 $dropFrom.slideUp();
             });
+
+            // 修改添加
+            $("#update-form").submit(function(){
+                var l = layer.load();
+                $.ajax({
+                    url: "{{ url('/admin/file/update') }}",
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    type: "post"
+                }).done(function(json){
+
+                }).fail(function(response){
+                    var html = '';
+                    if (response.responseJSON) {
+                        html += response.responseJSON.message+ " <br/>";
+                        for (var i in response.responseJSON.errors) {
+                            html += response.responseJSON.errors[i].join(";") + "<br/>";
+                        }
+                    } else {
+                        html = "服务器繁忙,请稍候再试...";
+                    }
+
+                    layer.msg(html, {icon: 5})
+                }).always(function(){
+                    layer.close(l);
+                });
+
+                return false;
+            })
         });
     </script>
 @endpush
