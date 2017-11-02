@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Uploaded images & files - LaraAdmin 1.0</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.4 -->
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/bootstrap.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/font-awesome.min.css') }}"/>
@@ -198,7 +199,6 @@
 
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
@@ -262,6 +262,7 @@
 <script type="text/javascript" src="{{ asset('admin-assets/js/app.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('admin-assets/plugins/stickytabs/jquery.stickytabs.js') }}"></script>
 <script type="text/javascript" src="{{ asset('admin-assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/layer/layer.js') }}"></script>
 @stack('script')
 </body>
 </html>

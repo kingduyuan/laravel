@@ -2,28 +2,99 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Upload;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Admin\Traits\Json;
 
+/**
+ * Class FileController
+ * 文件上传处理
+ *
+ * @package App\Http\Controllers\Admin
+ */
 class FileController extends Controller
 {
+    use Json;
+
+    /**
+     * 获取列表信息
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list()
+    {
+        $array = Upload::all();
+        $this->handleJson($array);
+        return $this->returnJson();
+    }
+
+    /**
+     * 文件上传 Upload files via DropZone.js
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function upload(Request $request)
     {
         if ($request->isMethod('post')) {
             $file = $request->file('file');
             if ($file->isValid()) {
-                // 获取文件相关信息
-                $originalName = $file->getClientOriginalName(); // 文件原名
-                $ext = $file->getClientOriginalExtension();     // 扩展名
-                $realPath = $file->getRealPath();               //临时文件的绝对路径
-                $type = $file->getClientMimeType();     // image/jpeg
-
                 // 上传文件
                 $url = $file->store(date('Ymd'));
-                if ($url) $url = Storage::url($url);
-                return $url;
+                if ($url) {
+                    // 新增数据
+                    $insert = [
+                        'name' => $file->getClientOriginalName(),
+                        'url' => Storage::url($url),
+                        'path' => $url,
+                        'title' => '',
+                        'extension' => $file->getClientOriginalExtension(),
+                        'public' => 1
+                    ];
+                    if ($upload = Upload::create($insert)) {
+                        $this->handleJson($upload);
+                    } else {
+                        $this->json['code'] = 1005;
+                    }
+                } else {
+                    $this->json['code'] = 1004;
+                }
+
+            } else {
+                $this->json['code'] = 1001;
             }
         }
+
+        return $this->returnJson();
+    }
+
+    /**
+     * 删除图片信息
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request)
+    {
+        $upload = Upload::find($request->input('id'));
+        if ($upload) {
+            if ($upload->delete()) {
+                Storage::delete($upload->path);
+                $this->handleJson($upload);
+            } else {
+                $this->json['code'] = 1003;
+            }
+        } else {
+            $this->json['code'] = 1002;
+        }
+
+        return $this->returnJson();
+    }
+
+    public function download(Request $request)
+    {
+        return response()->download('.' . trim($request->input('file'), '.'));
     }
 }

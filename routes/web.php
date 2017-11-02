@@ -15,13 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-///**
-// * admin 后台路由
-// */
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'IndexController@index')->name('admin.index');
 
-    Route::group(['namespace' => 'Admin'], function() {
-        Route::get('/', 'IndexController@index')->name('admin.index');
-        Route::get('/index/test', 'IndexController@test')->name('admin.index');
-    });
+    Route::get('/file/list', 'FileController@list')->name('admin.file.list');
+    Route::post('/file/upload', 'FileController@upload')->name('admin.file.upload');
+    Route::post('/file/delete', 'FileController@delete')->name('admin.file.delete');
+    Route::get('/file/download', 'FileController@download')->name('admin.file.download');
 });

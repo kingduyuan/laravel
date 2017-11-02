@@ -9,13 +9,16 @@
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "nwidart/db-exporter": "1.*",
         "tarampampam/laravel-ide-helper": "v1.0.5"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
-        "phpunit/phpunit": "~6.0"
+        "orangehill/iseed": "dev-master",
+        "phpunit/phpunit": "~6.0",
+        "xethron/migrations-generator": "^2.0"
     },
     "autoload": {
         "classmap": [
