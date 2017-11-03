@@ -102,6 +102,18 @@ class FileController extends Controller
      */
     public function update(StoreUpload $request)
     {
+        /* @var $upload Upload */
+        $upload = Upload::find($request->input('id'));
+        if ($upload) {
+            $upload->fill($request->input());
+            if ($upload->save()) {
+                $this->handleJson($upload);
+            } else {
+                $this->json['code'] = 1003;
+            }
+        } else {
+            $this->json['code'] = 1002;
+        }
         return $this->returnJson();
     }
 

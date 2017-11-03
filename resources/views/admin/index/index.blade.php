@@ -7,6 +7,7 @@
 @endsection
 
 @section("main-content")
+<div id="vue-app">
     <form action="{{ url('/admin/file/upload') }}" id="fm_dropzone_main" enctype="multipart/form-data" method="POST"
           class="hide">
         {{ csrf_field() }}
@@ -31,14 +32,14 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div class="row" id="image-lists">
-                <div class="col-md-3" v-for="item in list" key="item.id">
+                <div class="col-md-3" v-for="item, k in list" key="item.id">
                     <img class="img-responsive pad" :src="item.url" style="max-height: 300px;min-height: 250px"
                          alt="Photo">
-                    <p>@{{ item.name }}</p>
+                    <p>@{{ item.title }}</p>
                     <button type="button" class="btn btn-success btn-xs" @click="downloadValue(item)">
                         <i class="fa fa-cloud-download"></i> 下载
                     </button>
-                    <button type="button" class="btn btn-info btn-xs" @click="updateValue(item)">
+                    <button type="button" class="btn btn-info btn-xs" @click="updateValue(item, k)">
                         <i class="fa fa-pencil-square-o"></i> 修改
                     </button>
                     <button type="button" class="btn btn-danger btn-xs" @click="deleteValue(item)">
@@ -58,29 +59,39 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i class="fa fa-times"></i>
                         </button>
-                        <h4 class="modal-title" id="model-title">{{ trans('admin.file') }}: </h4>
+                        <h4 class="modal-title" id="model-title">{{ trans('admin.file') }}: @{{ form.title }}</h4>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <div class="fileObject"></div>
+                                <div class="fileObject">
+                                    <img :src="form.url" class="img-responsive" id="upload-image" alt="">
+                                </div>
                             </div>
                             <div class="col-xs-6 col-sm-6 col-md-6">
-                                <input type="hidden" name="id" id="upload-id" value="">
+                                <input type="hidden" name="id" :value="form.id">
                                 <div class="form-group">
                                     <label for="upload-name"> {{ trans('admin.fileName') }} </label>
-                                    <input class="form-control" type="text" name="name" id="upload-name" placeholder="{{ trans('admin.fileName') }}" >
+                                    <input class="form-control" :value="form.name" type="text" name="name" id="upload-name" placeholder="{{ trans('admin.fileName') }}" >
                                 </div>
                                 <div class="form-group">
                                     <label for="upload-url">{{ trans('admin.fileUrl') }}</label>
-                                    <input class="form-control" type="text" id="upload-url" placeholder="{{ trans('admin.fileUrl') }}"  readonly>
+                                    <input class="form-control" type="text" :value="form.url" id="upload-url" placeholder="{{ trans('admin.fileUrl') }}"  readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="upload-title">{{ trans('admin.fileTitle') }}</label>
-                                    <input class="form-control" type="text" name="title" id="upload-title" placeholder="{{ trans('admin.fileTitle') }}" >
+                                    <input class="form-control" type="text" :value="form.title" name="title" id="upload-title" placeholder="{{ trans('admin.fileTitle') }}" >
                                 </div>
                                 <div class="form-group">
-                                    <label for="public"> {{ trans('admin.filePublic') }} </label>
+                                    <label>{{ trans('admin.filePublic') }} </label>
+                                    <label>
+                                        <input type="radio" name="public" value="1" v-model="form.public">
+                                        是
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="public" value="0" v-model="form.public">
+                                        否
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -93,10 +104,11 @@
             </form>
         </div>
     </div>
+</div>
 @endsection
-@push('script')
+@push("script")
     <script type="text/javascript" src="{{ asset('admin-assets/plugins/dropzone/dropzone.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/vue/vue.min.js') }}"></script>
+    <script src="https://unpkg.com/vue"></script>
     <script>
         $.ajaxSetup({
             headers: {
@@ -107,20 +119,24 @@
         $(function () {
             // 显示图片
             var vueImage = new Vue({
-                el: "#image-lists",
+                el: "#vue-app",
                 data: {
-                    list: []
+                    list: [],
+                    index: 0,
+                    form: {
+                        id: 0,
+                        title: "",
+                        name: "",
+                        url: ""
+                    }
                 },
                 methods: {
                     downloadValue: function (value) {
                         window.location.href = '{{ url('admin/file/download')  }}?file=' + value.url;
                     },
-                    updateValue: function (value) {
-                        $("#upload-id").val(value.id);
-                        $("#upload-title").val(value.title);
-                        $("#upload-name").val(value.name);
-                        $("#upload-url").val(value.url);
-                        $("#modal-title").val("{{ trans('admin.file') }}: " + value.title);
+                    updateValue: function (value, key) {
+                        this.index = key;
+                        this.form = value;
                         $("#update-upload-modal").modal();
                     },
                     deleteValue: function (value) {
@@ -155,6 +171,7 @@
                     }).done(function(json){
                         if (json.code === 0) {
                             self.list = json.data;
+                            self.form = self.list[0];
                         }
                     });
                 }
@@ -198,6 +215,12 @@
                     dataType: "json",
                     type: "post"
                 }).done(function(json){
+                    if (json.code === 0) {
+                        vueImage.list.splice(vueImage.index, 1, json.data);
+                        $("#update-upload-modal").modal("hide")
+                    } else {
+                        layer.msg(json.message, {icon: 5})
+                    }
 
                 }).fail(function(response){
                     var html = '';
