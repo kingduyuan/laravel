@@ -1,16 +1,16 @@
 @extends("admin.layouts.admin")
 
-@section('header_title', '上传')
-@section('header_description', '上传图片和文件')
+@section('header_title', trans('admin.upload'))
+@section('header_description', trans('admin.dropFileUpload'))
 @section('header_right')
-    <button id="addNewUploads" class="btn btn-success btn-sm pull-right"> 上传</button>
+    <button id="addNewUploads" class="btn btn-success btn-sm pull-right"> {{ trans('admin.upload') }} </button>
 @endsection
 
 @section("main-content")
 <div id="vue-app">
     <div class="box box-success">
         <div class="box-header with-border">
-            上传文件列表
+            {{ trans('admin.dropFileUploadList') }}
             <!-- /.user-block -->
             <div class="box-tools">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse">
@@ -31,13 +31,13 @@
                              alt="Photo">
                         <p>@{{ item.title }}</p>
                         <button type="button" class="btn btn-success btn-xs" @click="downloadValue(item)">
-                            <i class="fa fa-cloud-download"></i> 下载
+                            <i class="fa fa-cloud-download"></i> {{ trans('admin.download') }}
                         </button>
                         <button type="button" class="btn btn-info btn-xs" @click="updateValue(item, k)">
-                            <i class="fa fa-pencil-square-o"></i> 修改
+                            <i class="fa fa-pencil-square-o"></i> {{ trans('admin.update') }}
                         </button>
                         <button type="button" class="btn btn-danger btn-xs" @click="deleteValue(item)">
-                            <i class="fa fa-trash-o"></i> 删除
+                            <i class="fa fa-trash-o"></i> {{ trans('admin.delete') }}
                         </button>
                         <span class="pull-right text-muted">@{{ item.create_time }}</span>
                     </div>
@@ -74,35 +74,37 @@
 
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <input type="hidden" name="id" :value="form.id">
-                            <div class="form-group">
-                                <label for="upload-name"> {{ trans('admin.fileName') }} </label>
-                                <input class="form-control" :value="form.name" type="text" name="name" id="upload-name" placeholder="{{ trans('admin.fileName') }}" >
-                            </div>
-                            <div class="form-group">
-                                <label for="upload-url">{{ trans('admin.fileUrl') }}</label>
-                                <input class="form-control" type="text" :value="form.url" id="upload-url" placeholder="{{ trans('admin.fileUrl') }}"  readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="upload-title">{{ trans('admin.fileTitle') }}</label>
-                                <input class="form-control" type="text" :value="form.title" name="title" id="upload-title" placeholder="{{ trans('admin.fileTitle') }}" >
-                            </div>
-                            <div class="form-group">
-                                <label>{{ trans('admin.filePublic') }} </label>
-                                <label>
-                                    <input type="radio" name="public" value="1" v-model="form.public">
-                                    是
-                                </label>
-                                <label>
-                                    <input type="radio" name="public" value="0" v-model="form.public">
-                                    否
-                                </label>
-                            </div>
+                            <form action="{{ url('/admin/file/update') }}" id="update-form">
+                                <input type="hidden" name="id" :value="form.id">
+                                <div class="form-group">
+                                    <label for="upload-name"> {{ trans('admin.fileName') }} </label>
+                                    <input class="form-control" required="true" rangelength="[2,255]" :value="form.name" type="text" name="name" id="upload-name" placeholder="{{ trans('admin.fileName') }}" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-url">{{ trans('admin.fileUrl') }}</label>
+                                    <input class="form-control" type="text" :value="form.url" id="upload-url" placeholder="{{ trans('admin.fileUrl') }}"  readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="upload-title">{{ trans('admin.fileTitle') }}</label>
+                                    <input class="form-control" required="true" rangelength="[2,255]" type="text" :value="form.title" name="title" id="upload-title" placeholder="{{ trans('admin.fileTitle') }}" >
+                                </div>
+                                <div class="form-group">
+                                    <label>{{ trans('admin.filePublic') }} </label>
+                                    <label>
+                                        <input type="radio" name="public" value="1" v-model="form.public">
+                                        {{ trans('admin.yes') }}
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="public" value="0" v-model="form.public">
+                                        {{ trans('admin.no') }}
+                                    </label>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-info" id="update-upload-but">{{ trans('admin.update') }}</button>
+                    <button type="button" class="btn btn-info" id="update-upload-but">{{ trans('admin.update') }}</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ trans('admin.close') }}</button>
                 </div>
             </div>
@@ -115,7 +117,7 @@
     <style>
         #dropzone {
             border: 2px dashed #0087F7;
-            min-height: 300px;
+            min-height: 100%;
         }
         .dropzone .dz-default.dz-message {
             background-image: none;
@@ -124,6 +126,7 @@
 @endpush
 @push("script")
     <script type="text/javascript" src="{{ asset('admin-assets/plugins/dropzone/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="https://unpkg.com/vue"></script>
     <script>
         $.ajaxSetup({
@@ -134,7 +137,7 @@
 
         var defaultValue = {
             id: 0,
-            title: "添加新文件",
+            title: "",
             name: "",
             url: "",
             public: 1
@@ -162,24 +165,30 @@
                     },
                     deleteValue: function (value) {
                         var self = this;
-                        for (var x in this.list) {
-                            if (value.id === this.list[x]['id']) {
-                                $.ajax({
-                                    url: "{{ url('admin/file/delete') }}",
-                                    data: value,
-                                    type: "post",
-                                    dataType: "json"
-                                }).done(function(json) {
-                                    if (json.code === 0) {
-                                        self.list.splice(x, 1);
-                                    }
-                                }).fail(function(){
-                                    alert("服务器繁忙,请稍候再试...")
-                                });
+                        layer.confirm("{{ trans('admin.confirmFileDelete')  }}", {
+                            title: "{{ trans('admin.remind')  }}",
+                            icon: 0,
+                        }, function(index) {
+                            layer.close(index);
+                            for (var x in self.list) {
+                                if (value.id === self.list[x]['id']) {
+                                    $.ajax({
+                                        url: "{{ url('admin/file/delete') }}",
+                                        data: value,
+                                        type: "post",
+                                        dataType: "json"
+                                    }).done(function(json) {
+                                        if (json.code === 0) {
+                                            self.list.splice(x, 1);
+                                        }
+                                    }).fail(function(){
+                                        layer.msg("{{ trans('error.server') }}", {icon: 5})
+                                    });
 
-                                break
+                                    break
+                                }
                             }
-                        }
+                        })
                     }
                 },
 
@@ -202,12 +211,18 @@
                 maxFilesize: 1,
                 acceptedFiles: "image/*,application/pdf",
                 init: function () {
+                    // 完成就删除
+                    this.on("complete", function (file) {
+                        this.removeFile(file);
+                    });
+
+                    // 成功处理
                     this.on("success", function (file, response) {
                         if (response.code === 0) {
                             vueImage.isUpload = false;
-                            vueImage.form.url = response.data.url;
-                            vueImage.form.name = response.data.name;
-                            // vueImage.list.push(response.data);
+                            vueImage.form = response.data;
+                            vueImage.list.push(response.data);
+                            vueImage.index = vueImage.list.length - 1;
                         }
                     });
                 }
@@ -216,40 +231,43 @@
             // 上传图片
             $("#addNewUploads").on("click", function () {
                 vueImage.isUpload = true;
+                vueImage.form = defaultValue;
                 $("#update-upload-modal").modal()
             });
 
             // 修改添加
-            $("#update-form").submit(function(){
-                var l = layer.load();
-                $.ajax({
-                    url: "{{ url('/admin/file/update') }}",
-                    data: $(this).serialize(),
-                    dataType: "json",
-                    type: "post"
-                }).done(function(json){
-                    if (json.code === 0) {
-                        vueImage.list.splice(vueImage.index, 1, json.data);
-                        $("#update-upload-modal").modal("hide")
-                    } else {
-                        layer.msg(json.message, {icon: 5})
-                    }
-
-                }).fail(function(response){
-                    var html = '';
-                    if (response.responseJSON) {
-                        html += response.responseJSON.message+ " <br/>";
-                        for (var i in response.responseJSON.errors) {
-                            html += response.responseJSON.errors[i].join(";") + "<br/>";
+            $("#update-upload-but").click(function(){
+                var $fm = $("#update-form");
+                if ($fm.validate().form()) {
+                    var l = layer.load();
+                    $.ajax({
+                        url: "{{ url('/admin/file/update') }}",
+                        data: $fm.serialize(),
+                        dataType: "json",
+                        type: "post"
+                    }).done(function(json){
+                        if (json.code === 0) {
+                            vueImage.list.splice(vueImage.index, 1, json.data);
+                            $("#update-upload-modal").modal("hide")
+                        } else {
+                            layer.msg(json.message, {icon: 5})
                         }
-                    } else {
-                        html = "服务器繁忙,请稍候再试...";
-                    }
+                    }).fail(function(response){
+                        var html = '';
+                        if (response.responseJSON) {
+                            html += response.responseJSON.message+ " <br/>";
+                            for (var i in response.responseJSON.errors) {
+                                html += response.responseJSON.errors[i].join(";") + "<br/>";
+                            }
+                        } else {
+                            html = "{{ trans('error.server') }}";
+                        }
 
-                    layer.msg(html, {icon: 5})
-                }).always(function(){
-                    layer.close(l);
-                });
+                        layer.msg(html, {icon: 5})
+                    }).always(function(){
+                        layer.close(l);
+                    });
+                }
 
                 return false;
             })
