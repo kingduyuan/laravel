@@ -20,6 +20,16 @@ class UploadsController extends Controller
     use Json;
 
     /**
+     * 首页显示
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
+    {
+        return view('admin.uploads.index');
+    }
+
+    /**
      * 获取列表信息
      *
      * @return \Illuminate\Http\JsonResponse

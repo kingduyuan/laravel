@@ -17,12 +17,22 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
-    Route::get('/', 'IndexController@index')->name('admin.index');
+    Route::get('/', function () {
+        return view('admin.uploads.index');
+    })->name('admin.index');
+
+    // 日程管理
+    Route::get('/calendars/index', 'CalendarsController@index')->name('admin.calendars.index');
+    Route::post('/calendars/update', 'CalendarsController@update')->name('admin.calendars.update');
+    Route::post('/calendars/create', 'CalendarsController@create')->name('admin.calendars.create');
+    Route::post('/calendars/delete', 'CalendarsController@delete')->name('admin.calendars.delete');
+    Route::get('/calendars/events', 'CalendarsController@events')->name('admin.calendars.events');
 
     // 文件上传功能
-    Route::get('/uploads/list', 'FileController@list')->name('admin.uploads.list');
-    Route::post('/uploads/upload', 'FileController@upload')->name('admin.uploads.upload');
-    Route::post('/uploads/delete', 'FileController@delete')->name('admin.uploads.delete');
-    Route::post('/uploads/update', 'FileController@update')->name('admin.uploads.update');
-    Route::get('/uploads/download', 'FileController@download')->name('admin.uploads.download');
+    Route::get('/uploads/index', 'UploadsController@index')->name('admin.uploads.index');
+    Route::get('/uploads/list', 'UploadsController@list')->name('admin.uploads.list');
+    Route::post('/uploads/upload', 'UploadsController@upload')->name('admin.uploads.upload');
+    Route::post('/uploads/delete', 'UploadsController@delete')->name('admin.uploads.delete');
+    Route::post('/uploads/update', 'UploadsController@update')->name('admin.uploads.update');
+    Route::get('/uploads/download', 'UploadsController@download')->name('admin.uploads.download');
 });

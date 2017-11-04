@@ -222,7 +222,7 @@
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
         <section class="content-header">
-            <h1> @yield('header_title', '欢迎')
+            <h1> @yield('header_title', trans('admin.welcome'))
                 <small> @yield('header_description') </small>
             </h1>
             @hasSection('header_right')
@@ -231,9 +231,14 @@
                 </span>
             @else
                 <ol class="breadcrumb">
-                    <li><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> 首页 </a></li>
-                    <li><a href="#">Forms</a></li>
-                    <li class="active">Advanced Elements</li>
+                    <li><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> {{ trans('admin.home') }} </a></li>
+                    @foreach ($breadCrumb as $item)
+                        @if ($loop->last)
+                            <li class="active">{{ $item['label'] }}</li>
+                        @else
+                            <li><a href="{{ $item['url'] }}">{{ $item['label']  }}</a></li>
+                        @endif
+                    @endforeach
                 </ol>
             @endif
         </section>
