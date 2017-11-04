@@ -61,7 +61,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <form v-show="isUpload" action="{{ url('/admin/file/upload') }}" class="dropzone" id="dropzone">
+                            <form v-show="isUpload" action="{{ url('/admin/uploads/upload') }}" class="dropzone" id="dropzone">
                                 {{ csrf_field() }}
                                 <div class="dz-message text-center">
                                     <i class="fa fa-cloud-upload"></i>
@@ -74,7 +74,7 @@
 
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
-                            <form action="{{ url('/admin/file/update') }}" id="update-form">
+                            <form action="{{ url('/admin/uploads/update') }}" id="update-form">
                                 <input type="hidden" name="id" :value="form.id">
                                 <div class="form-group">
                                     <label for="upload-name"> {{ trans('admin.fileName') }} </label>
@@ -155,7 +155,7 @@
                 },
                 methods: {
                     downloadValue: function (value) {
-                        window.location.href = '{{ url('admin/file/download')  }}?file=' + value.url;
+                        window.location.href = '{{ url('admin/uploads/download')  }}?file=' + value.url;
                     },
                     updateValue: function (value, key) {
                         this.index = key;
@@ -173,7 +173,7 @@
                             for (var x in self.list) {
                                 if (value.id === self.list[x]['id']) {
                                     $.ajax({
-                                        url: "{{ url('admin/file/delete') }}",
+                                        url: "{{ url('admin/uploads/delete') }}",
                                         data: value,
                                         type: "post",
                                         dataType: "json"
@@ -195,7 +195,7 @@
                 created: function() {
                     var self = this;
                     $.ajax({
-                        url: "{{ url('/admin/file/list')  }}",
+                        url: "{{ url('/admin/uploads/list')  }}",
                         type: "get",
                         dataType: "json"
                     }).done(function(json){
@@ -241,7 +241,7 @@
                 if ($fm.validate().form()) {
                     var l = layer.load();
                     $.ajax({
-                        url: "{{ url('/admin/file/update') }}",
+                        url: "{{ url('/admin/uploads/update') }}",
                         data: $fm.serialize(),
                         dataType: "json",
                         type: "post"

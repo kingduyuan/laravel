@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Admin\Traits\Json;
 
 /**
- * Class FileController
+ * Class UploadsController
  * 文件上传处理
  *
  * @package App\Http\Controllers\Admin
  */
-class FileController extends Controller
+class UploadsController extends Controller
 {
     use Json;
 

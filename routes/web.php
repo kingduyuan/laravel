@@ -16,11 +16,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
+
     Route::get('/', 'IndexController@index')->name('admin.index');
 
-    Route::get('/file/list', 'FileController@list')->name('admin.file.list');
-    Route::post('/file/upload', 'FileController@upload')->name('admin.file.upload');
-    Route::post('/file/delete', 'FileController@delete')->name('admin.file.delete');
-    Route::post('/file/update', 'FileController@update')->name('admin.file.update');
-    Route::get('/file/download', 'FileController@download')->name('admin.file.download');
+    // 文件上传功能
+    Route::get('/uploads/list', 'FileController@list')->name('admin.uploads.list');
+    Route::post('/uploads/upload', 'FileController@upload')->name('admin.uploads.upload');
+    Route::post('/uploads/delete', 'FileController@delete')->name('admin.uploads.delete');
+    Route::post('/uploads/update', 'FileController@update')->name('admin.uploads.update');
+    Route::get('/uploads/download', 'FileController@download')->name('admin.uploads.download');
 });
