@@ -32,6 +32,25 @@ class CalendarsController extends Controller
         ]);
     }
 
+    public function search(Request $request)
+    {
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $order = $request->input('order');
+        $columns = $request->input('columns');
+        $first = $columns[$order[0]['column']]['data'];
+
+        $query = Calender::where('status', '!=', -1)->orderBy($first, $order[0]['dir']);
+        $total = $query->count();
+
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'recordsTotal' => $total,
+            'recordsFiltered' => $total,
+            'data' => $query->offset($start)->limit($length)->get()
+        ]);
+    }
+
     /**
      * 我的日程管理显示
      *

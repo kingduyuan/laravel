@@ -145,7 +145,7 @@
                                             <input type="radio" required="true" number="true" name="status"
                                                    @if ($key == 1)
                                                    checked="checked"
-                                                   @endif;
+                                                   @endif
                                                    class="minimal" value="{{ $key }}">
                                             {{ $value }}
                                         </label>
@@ -160,7 +160,7 @@
                                             <input type="radio" required="true" number="true" name="time_status"
                                                    @if ($key == 1)
                                                    checked="checked"
-                                                   @endif;
+                                                   @endif
                                                    class="minimal" value="{{ $key }}">
                                             {{ $value }}
                                         </label>

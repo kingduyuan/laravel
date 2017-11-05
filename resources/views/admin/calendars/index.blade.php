@@ -12,17 +12,11 @@
             <div class="box box-primary">
                 <!-- /.box-header -->
                 <div class="box-body">
-                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="row">
-                            <div class="col-sm-6"></div>
-                            <div class="col-sm-6"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
-                                       aria-describedby="example2_info">
-                                </table>
-                            </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                   aria-describedby="example2_info">
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -91,7 +85,7 @@
                                             <input type="radio" required="true" number="true" name="status"
                                                    @if ($key == 1)
                                                    checked="checked"
-                                                   @endif;
+                                                   @endif
                                                    class="minimal" value="{{ $key }}">
                                             {{ $value }}
                                         </label>
@@ -106,7 +100,7 @@
                                             <input type="radio" required="true" number="true" name="time_status"
                                                    @if ($key == 1)
                                                    checked="checked"
-                                                   @endif;
+                                                   @endif
                                                    class="minimal" value="{{ $key }}">
                                             {{ $value }}
                                         </label>
@@ -150,11 +144,10 @@
 @endsection
 @push('style')
     <link rel="stylesheet" type="text/css"
-          href="{{ asset('admin-assets/plugins/fullcalendar/fullcalendar.min.css') }}"/>
-    <link rel="stylesheet" type="text/css"
-          href="{{ asset('admin-assets/plugins/iCheck/all.css') }}"/>
+          href="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/css/dataTables.bootstrap.min.css') }}"/>
 @endpush
 @push("script")
+    <script src="{{ asset('admin-assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
@@ -162,13 +155,24 @@
     <script>
         $(function () {
             $('#example2').DataTable({
-                'paging'      : true,
+                'paging': true,
                 'lengthChange': false,
-                'searching'   : false,
-                'ordering'    : false,
-                'info'        : true,
-                'autoWidth'   : false
-            })
+                'searching': true,
+                'ordering': true,
+                'info': true,
+                'autoWidth': false,
+                "processing": true,
+                "serverSide": true,
+                "ajax": "{{ url('/admin/calendars/search') }}",
+                language: jqueryDataTableLanguage,
+                columns: [
+                    {"title": "id", "data": "id"},
+                    {"title": "标题", "data": "title"},
+                    {"title": "说明", "data": "desc"},
+                    {"title": "创建时间", "data": "created_at"},
+                    {"title": "修改事件", "data": "updated_at"}
+                ],
+            });
         })
     </script>
 @endpush

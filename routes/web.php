@@ -23,6 +23,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 
     // 日程管理
     Route::get('/calendars/index', 'CalendarsController@index')->name('admin.calendars.index');
+    Route::get('/calendars/search', 'CalendarsController@search')->name('admin.calendars.search');
     Route::get('/calendars/me', 'CalendarsController@me')->name('admin.calendars.me');
     Route::post('/calendars/update', 'CalendarsController@update')->name('admin.calendars.update');
     Route::post('/calendars/create', 'CalendarsController@create')->name('admin.calendars.create');
