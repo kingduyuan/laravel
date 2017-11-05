@@ -24,6 +24,26 @@ class CalendarsController extends Controller
         $timeStatus = Calender::getTimeStatus();
         $colors = Calender::$arrColor;
 
+        // 载入视图
+        return view('admin.calendars.index', [
+            'status' => $status,
+            'timeStatus' => $timeStatus,
+            'colors' => $colors,
+        ]);
+    }
+
+    /**
+     * 我的日程管理显示
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function me()
+    {
+        // 默认状态信息
+        $status = Calender::getStatus();
+        $timeStatus = Calender::getTimeStatus();
+        $colors = Calender::$arrColor;
+
         // 查询数据
         $all = DB::table('calendars')->where('status', '=', 0)->orderBy('id', 'desc')->get();
         foreach ($all as &$value) {
@@ -32,7 +52,7 @@ class CalendarsController extends Controller
         }
 
         // 载入视图
-        return view('admin.calendars.index', [
+        return view('admin.calendars.me', [
             'status' => $status,
             'timeStatus' => $timeStatus,
             'colors' => $colors,

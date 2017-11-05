@@ -1,89 +1,70 @@
 @extends("admin.layouts.admin")
 
 @section('header_title', '日程管理')
-@section('header_description', '我的日程')
-@php
-    $breadCrumb = [
-        ['label' => '日程管理', 'url' => '/admin/uploads/index'],
-        ['label' => '我的日程']
-    ];
-@endphp
+@section('header_description', '日程列表')
+@section('header_right')
+    123
+@endsection
+
 @section("main-content")
     <div class="row">
-        <div class="col-md-3">
-            <div class="box box-solid">
-                <div class="box-header with-border">
-                    <h4 class="box-title">{{ trans('admin.draggableEvents') }}</h4>
-                </div>
-                <div class="box-body">
-                    <!-- the events -->
-                    <div id="external-events">
-                        @foreach($calendars as $calendar)
-                            <div class="external-event"
-                                 style="color: #fff; background-color: {{ $calendar->backgroundColor }}; border-color: {{ $calendar->borderColor }}"
-                                 data-id="{{ $calendar->id }}"
-                                 data-title="{{ $calendar->title }}"
-                                 data-desc="{{ $calendar->desc }}"
-                                 data-time_status="{{ $calendar->time_status }}"
-                            >{{ $calendar->title }}</div>
-                        @endforeach
-                        <div class="checkbox">
-                            <label for="drop-remove">
-                                <input type="checkbox" id="drop-remove">
-                                {{ trans('admin.removeAfterDrop') }}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
-            <!-- /. box -->
-            <div class="box box-solid">
-                <div class="box-header with-border">
-                    <h3 class="box-title">{{ trans('admin.createEvent')  }}</h3>
-                </div>
-                <div class="box-body">
-                    <div class="btn-group" style="width: 100%; margin-bottom: 10px;">
-                        <ul class="fc-color-picker" id="color-chooser">
-                            <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
-                            <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
-                        </ul>
-                    </div>
-                    <!-- /btn-group -->
-                    <div class="input-group">
-                        <input id="new-event" type="text" class="form-control"
-                               placeholder="{{ trans('admin.eventTitle') }}">
-                        <div class="input-group-btn">
-                            <button id="add-new-event" type="button"
-                                    class="btn btn-primary btn-flat"> {{ trans('admin.create') }} </button>
-                        </div>
-                        <!-- /btn-group -->
-                    </div>
-                    <!-- /input-group -->
-                </div>
-            </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-xs-12">
             <div class="box box-primary">
-                <div class="box-body no-padding">
-                    <!-- THE CALENDAR -->
-                    <div id="calendar"></div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <div id="example2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                        <div class="row">
+                            <div class="col-sm-6"></div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
+                                       aria-describedby="example2_info">
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1
+                                    to 10 of 57 entries
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button previous disabled" id="example2_previous">
+                                            <a href="#"
+                                               aria-controls="example2"
+                                               data-dt-idx="0"
+                                               tabindex="0">Previous</a>
+                                        </li>
+                                        <li class="paginate_button active"><a href="#" aria-controls="example2"
+                                                                              data-dt-idx="1" tabindex="0">1</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="2"
+                                                                        tabindex="0">2</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="3"
+                                                                        tabindex="0">3</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="4"
+                                                                        tabindex="0">4</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="5"
+                                                                        tabindex="0">5</a></li>
+                                        <li class="paginate_button "><a href="#" aria-controls="example2" data-dt-idx="6"
+                                                                        tabindex="0">6</a></li>
+                                        <li class="paginate_button next" id="example2_next"><a href="#"
+                                                                                               aria-controls="example2"
+                                                                                               data-dt-idx="7" tabindex="0">Next</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.box-body -->
             </div>
-            <!-- /. box -->
+            <!-- /.box -->
         </div>
-        <!-- /.col -->
     </div>
 
     <!--隐藏的编辑表单-->
@@ -209,317 +190,20 @@
           href="{{ asset('admin-assets/plugins/iCheck/all.css') }}"/>
 @endpush
 @push("script")
-    <script src="{{ asset('admin-assets/plugins/jQueryUI/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('admin-assets/plugins/datepicker/moment.min.js') }}"></script>
-    <script src="{{ asset('admin-assets/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('admin-assets/plugins/iCheck/icheck.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <!-- Page specific script -->
     <script>
-        /**
-         * formObject() 给表单对象赋值
-         * @param form   表单对象
-         * @param array 用来赋值对象
-         */
-        function formObject(form, array) {
-            form.reset();
-            if (array) {
-                for (var i in array) {
-                    if (form[i]) form[i].value = array[i];
-                }
-            }
-        }
-
-        var modal = $('#calendarModal'),
-            oDrop = null,
-            calenderCalEvent = {},
-            form = document.editForm;
-
-        /**
-         * formUpdateObject() 给修改的表单对象赋值，并确定是否提交数据
-         * @param form      表单对象
-         * @param calEvent  事件对象
-         * @param isSubmit  是否提交表单
-         */
-        function formUpdateObject(form, calEvent, isSubmit) {
-            calenderCalEvent = calEvent;
-            formObject(form, {
-                id: calEvent.id,                                   // ID
-                title: $.trim(calEvent.title),                        // 标题
-                desc: $.trim(calEvent.desc),                         // 说明描述
-                start: calEvent.start.format('YYYY-MM-DD HH:mm:ss'),  // 时间开始
-                end: calEvent.end.format('YYYY-MM-DD HH:mm:ss'),    // 时间结束
-                time_status: calEvent.time_status,                  // 时间状态
-                status: calEvent.status,                               // 状态
-                actionType: 'update',
-                "style": calEvent.backgroundColor
-            });
-
-            $("#style-button").css({
-                "background-color": calEvent.backgroundColor,
-                "border-color": calEvent.backgroundColor
-            });
-            $("#style-input").val(calEvent.backgroundColor);
-            if (isSubmit === true) $('#update-calendar').trigger('click');
-        }
-
         $(function () {
-            // 编辑选择样式
-            var $b = $("#style-button"),
-                $i = $("#style-input"),
-                strColor = '#3c8dbc';
-            $("#style-select a").click(function (e) {
-                e.preventDefault();
-                strColor = $(this).css("color");
-                $b.css({"background-color": strColor, "border-color": strColor});
-                $i.val(strColor);
-            });
-
-            //Red color scheme for iCheck
-            $('input[type="radio"].minimal').iCheck({
-                checkboxClass: 'icheckbox_flat-blue',
-                radioClass: 'iradio_flat-blue'
-            });
-
-            $('#external-events div.external-event').each(function () {
-                $(this).draggable({
-                    zIndex: 1070,
-                    revert: true, // will cause the event to go back to its
-                    revertDuration: 0  //  original position after the drag
-                })
-            });
-
-            // 初始化一个事件管理
-            var calendar = $('#calendar').fullCalendar({
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaWeek,agendaDay'
-                },
-                buttonText: {
-                    today: '{{ trans('admin.today') }}',
-                    month: '{{ trans('admin.month') }}',
-                    week: '{{ trans('admin.week') }}',
-                    day: '{{ trans('admin.day') }}'
-                },
-                //Random default events
-                events: "{{ url('/admin/calendars/events') }}",
-                editable: true,
-                droppable: true, // this allows things to be dropped onto the calendar !!!
-                drop: function (date, allDay) { // this function is called when something is dropped
-                    var isDel = $('#drop-remove').is(':checked');
-                    if (isDel) oDrop = $(this);
-                    var day = new Date(date.format("YYYY-MM-DD HH:mm:ss")),
-                        time = day.getTime() + 24 * 3600 * 1000,
-                        endDate = new Date(time);
-
-                    formObject(form, {
-                        "id": $.trim($(this).attr("data-id")),
-                        "title": $.trim($(this).attr("data-title")),
-                        "desc": $.trim($(this).attr("data-desc")),
-                        "start": date.format("YYYY-MM-DD HH:mm:ss"),
-                        "end": moment(endDate).format("YYYY-MM-DD HH:mm:ss"),
-                        "status": 1,
-                        "time_status": $.trim($(this).attr("data-time_status")),
-                        "actionType": isDel ? "update" : "create",
-                        "style": $(this).css("background-color")
-                    });
-
-                    $('#update-calendar').trigger("click");
-                },
-
-                /**
-                 * 事件被拖拽
-                 * calEvent      已经移动后的事件对象
-                 * dayDelta      保存日程向前或者向后移动了多少的数据
-                 * minuteDelta   这个值只有在agenda视图有效，移动的时间
-                 * allDay        如果是月视图,或者是agenda视图的全天日程，此值为true,否则为false
-                 */
-                eventDrop: function (calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-//                    // 表单重新赋值
-                    formUpdateObject(form, calEvent, true);
-                },
-                /**
-                 * 事件改变大小
-                 * calEvent      已经移动后的事件对象
-                 * dayDelta      保存日程向前或者向后移动了多少的数据
-                 * minuteDelta   这个值只有在agenda视图有效，移动的时间
-                 * allDay        如果是月视图,或者是agenda视图的全天日程，此值为true,否则为false
-                 */
-                eventResize: function (calEvent, dayDelta, minuteDelta, allDay, revertFunc, jsEvent, ui, view) {
-                    // 表单重新赋值
-                    formUpdateObject(form, calEvent, true);
-                },
-
-                selectable: true,
-                selectHelper: true,
-                // 点击日期事件
-                select: function (start, end, allDay) {
-                    $('#delete-calendar').hide();
-                    // 默认赋值
-                    formObject(form, {
-                        "id": 0,
-                        "start": start.format('YYYY-MM-DD HH:mm:ss'),    // 时间开始
-                        'end': end.format('YYYY-MM-DD HH:mm:ss'),       // 时间结束
-                        'time_status': 1,                               // 时间状态
-                        'status': 1,                                    // 状态
-                        'actionType': 'create'                          // 操作类型
-                    });
-
-                    // 添加一个新的日程事件
-                    modal.modal('show').find('h4').html('添加一个新的事件');
-                },
-
-                // 事件被点击
-                eventClick: function (calEvent, jsEvent, view) {
-                    $('#delete-calendar').show();
-                    // 开始赋值显示编辑
-                    formUpdateObject(form, calEvent);
-                    modal.modal('show').find('h4').html('编辑日程事件信息');
-                }
-            });
-
-            // 选择颜色联动
-            var currColor = '#3c8dbc';
-            var $addEvent = $('#add-new-event');
-            $('#color-chooser > li > a').click(function (e) {
-                e.preventDefault();
-                currColor = $(this).css('color');
-                $addEvent.css({'background-color': currColor, 'border-color': currColor})
-            });
-
-            // 添加新的事件
-            $addEvent.click(function (e) {
-                e.preventDefault();
-                var $events = $('#new-event'),
-                    val = $events.val();
-                if (val.length === 0) {
-                    return
-                }
-
-                // 开始新增数据
-                getLaravelRequest({
-                    url: "{{ url('admin/calendars/create') }}",
-                    data: {
-                        title: val,
-                        style: currColor,
-                        status: 0
-                    },
-                    dataType: "json",
-                    type: "POST"
-                }).done(function (json) {
-                    if (json.code === 0) {
-                        //Create events
-                        var event = $('<div />');
-                        event.css({
-                            'background-color': currColor,
-                            'border-color': currColor,
-                            'color': '#fff'
-                        }).addClass('external-event').attr({
-                            "data-id": json.data.id,
-                            "data-title": json.data.title,
-                            "data-desc": json.data.desc,
-                            "data-status": 1,
-                            "data-time_status": json.data["time_status"],
-                            "data-style": currColor
-                        });
-
-                        event.html(val).draggable({
-                            zIndex: 1070,
-                            revert: true, // will cause the event to go back to its
-                            revertDuration: 0  //  original position after the drag
-                        });
-
-                        $('#external-events').prepend(event);
-                        $events.val('')
-                    } else {
-                        layer.msg(json.message, {icon: 5});
-                    }
-                });
-            });
-
-            // 编辑日程事件
-            $('#update-calendar').click(function () {
-                var $fm = $('#editForm');
-                if ($fm.validate().form()) {
-                    // 提交数据
-                    getLaravelRequest({
-                        url: "/admin/calendars/" + $fm.find('input[name=actionType]').val(),
-                        type: "POST",
-                        dataType: "json",
-                        data: $fm.serializeArray()
-                    }).done(function (json) {
-                        layer.msg(json.message, {icon: json.code === 0 ? 6 : 5});
-                        if (json.code === 0) {
-                            var style = "";
-                            try {
-                                style = JSON.parse(json.data.style);
-                                console.info(style);
-                            } catch (e) {
-                            }
-
-                            // 开始修改数据
-                            calenderCalEvent.id = json.data.id;
-                            calenderCalEvent.desc = json.data.desc;
-                            calenderCalEvent.title = json.data.title;
-                            calenderCalEvent.start = new Date(json.data.start);
-                            calenderCalEvent.end = new Date(json.data.end);
-                            calenderCalEvent.status = json.data.status;
-                            calenderCalEvent.time_status = json.data.time_status;
-                            calenderCalEvent.allDay = true; //  json.data.time_status;
-
-                            if (style) {
-                                calenderCalEvent.backgroundColor = style.backgroundColor;
-                                calenderCalEvent.borderColor = style.borderColor;
-                            }
-
-                            // 判断类型处理数据
-                            var strEvent = form.actionType.value === "update" && !oDrop ? "updateEvent" : "renderEvent";
-                            calendar.fullCalendar(strEvent, calenderCalEvent, true);
-                            // 新增日程事件
-                            if (strEvent === "renderEvent" && !oDrop) calendar.fullCalendar("unselect");
-                            // 拖拽日程事件
-                            if (oDrop) oDrop.remove();
-                            oDrop = null;
-                            calenderCalEvent = {};
-                            modal.modal("hide");
-                        }
-                    });
-                }
-            });
-
-            // 删除日程事件
-            $('#delete-calendar').click(function () {
-                // 删除之前先提醒
-                layer.confirm('您确定需要删除这条数据吗?', {
-                    title: '确认操作',
-                    btn: ['确定', '取消'],
-                    shift: 4,
-                    icon: 0
-                    // 确认删除
-                }, function () {
-                    ajax({
-                        url: 'delete',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {
-                            'id': calenderCalEvent._id,
-                        }
-                    }).done(function (json) {
-                        layer.msg(json.message, {icon: json.code === 0 ? 6 : 5});
-                        if (json.code === 0) {
-                            calendar.fullCalendar('removeEvents', function (ev) {
-                                return (ev._id === calenderCalEvent._id);
-                            });
-                            calenderCalEvent = {};
-                            modal.modal("hide");
-                        }
-                    });
-                    // 取消删除
-                }, function () {
-                    layer.msg('您取消了删除操作！', {time: 800});
-                });
-            });
-        });
+            $('#example2').DataTable({
+                'paging'      : true,
+                'lengthChange': false,
+                'searching'   : false,
+                'ordering'    : true,
+                'info'        : true,
+                'autoWidth'   : false
+            })
+        })
     </script>
 @endpush
