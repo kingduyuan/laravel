@@ -125,16 +125,10 @@
     </style>
 @endpush
 @push("script")
-    <script type="text/javascript" src="{{ asset('admin-assets/plugins/dropzone/dropzone.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/plugins/dropzone/dropzone.min.js') }}"></script>
+    <script src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="https://unpkg.com/vue"></script>
     <script>
-        $.ajaxSetup({
-            headers: {
-                "X-CSRF-TOKEN": $("meta[name='csrf-token']").attr("content")
-            }
-        });
-
         var defaultValue = {
             id: 0,
             title: "",
@@ -172,7 +166,7 @@
                             layer.close(index);
                             for (var x in self.list) {
                                 if (value.id === self.list[x]['id']) {
-                                    $.ajax({
+                                    ajax({
                                         url: "{{ url('admin/uploads/delete') }}",
                                         data: value,
                                         type: "post",
@@ -181,8 +175,6 @@
                                         if (json.code === 0) {
                                             self.list.splice(x, 1);
                                         }
-                                    }).fail(function(){
-                                        layer.msg("{{ trans('error.server') }}", {icon: 5})
                                     });
 
                                     break
@@ -194,7 +186,7 @@
 
                 created: function() {
                     var self = this;
-                    $.ajax({
+                    ajax({
                         url: "{{ url('/admin/uploads/list')  }}",
                         type: "get",
                         dataType: "json"
@@ -239,33 +231,18 @@
             $("#update-upload-but").click(function(){
                 var $fm = $("#update-form");
                 if ($fm.validate().form()) {
-                    var l = layer.load();
-                    $.ajax({
+                    getLaravelRequest({
                         url: "{{ url('/admin/uploads/update') }}",
                         data: $fm.serialize(),
                         dataType: "json",
                         type: "post"
-                    }).done(function(json){
+                    }, "{{ trans('error.server') }}").done(function(json){
                         if (json.code === 0) {
                             vueImage.list.splice(vueImage.index, 1, json.data);
                             $("#update-upload-modal").modal("hide")
                         } else {
                             layer.msg(json.message, {icon: 5})
                         }
-                    }).fail(function(response){
-                        var html = '';
-                        if (response.responseJSON) {
-                            html += response.responseJSON.message+ " <br/>";
-                            for (var i in response.responseJSON.errors) {
-                                html += response.responseJSON.errors[i].join(";") + "<br/>";
-                            }
-                        } else {
-                            html = "{{ trans('error.server') }}";
-                        }
-
-                        layer.msg(html, {icon: 5})
-                    }).always(function(){
-                        layer.close(l);
                     });
                 }
 

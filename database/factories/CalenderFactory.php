@@ -5,22 +5,9 @@ use Faker\Generator as Faker;
 /* @var Illuminate\Database\Eloquent\Factory $factory */
 
 $factory->define(App\Models\Calender::class, function (Faker $faker) {
+    // 初始化定义
     $intStart = time() + (mt_rand(-21, 24) * 3600);
-    static $arrColor = [
-        'rgb(72, 176, 247)',
-        'rgb(57, 204, 204)',
-        'rgb(243, 156, 18)',
-        'rgb(255, 133, 27)',
-        'rgb(16, 207, 189)',
-        'rgb(1, 255, 112)',
-        'rgb(245, 87, 83)',
-        'rgb(96, 92, 168)',
-        'rgb(240, 18, 190)',
-        'rgb(119, 119, 119)',
-        'rgb(0, 31, 63)',
-    ];
-
-    $color = array_random($arrColor, 1);
+    $color = array_random(App\Models\Calender::$arrColor, 1);
 
     return [
         'title' => $faker->name,

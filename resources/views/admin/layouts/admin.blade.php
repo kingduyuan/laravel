@@ -268,6 +268,7 @@
 <script type="text/javascript" src="{{ asset('admin-assets/plugins/stickytabs/jquery.stickytabs.js') }}"></script>
 <script type="text/javascript" src="{{ asset('admin-assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <script type="text/javascript" src="{{ asset('js/layer/layer.js') }}"></script>
+<script type="text/javascript" src="{{ asset('admin-assets/js/tools.js') }}"></script>
 @stack('script')
 </body>
 </html>
