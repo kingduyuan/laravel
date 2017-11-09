@@ -1,6 +1,6 @@
 var jqueryDataTableLanguage = {
     "decimal": "",
-    "emptyTable": "No data available in table",
+    "emptyTable": "没有数据呢 ^.^",
     "info": "显示 _START_ 到 _END_ 共有 _TOTAL_ 条数据",
     "infoEmpty": "无记录",
     "infoFiltered": "(从 _MAX_ 条记录过滤)",

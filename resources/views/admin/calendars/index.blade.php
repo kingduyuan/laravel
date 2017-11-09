@@ -14,9 +14,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-12">
-                            <table id="example2" class="table table-bordered table-hover dataTable" role="grid"
-                                   aria-describedby="example2_info">
-                            </table>
+                            <table id="example2" class="table table-bordered table-hover"></table>
                         </div>
                     </div>
                 </div>
@@ -171,7 +169,7 @@
                     {"title": "说明", "data": "desc"},
                     {"title": "创建时间", "data": "created_at"},
                     {"title": "修改事件", "data": "updated_at"}
-                ],
+                ]
             });
         })
     </script>
