@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Calender extends Model
+class Calendar extends Model
 {
     // 状态信息
     const STATUS_PENDING = 0;  // 待处理

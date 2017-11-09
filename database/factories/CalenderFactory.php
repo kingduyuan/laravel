@@ -4,10 +4,10 @@ use Faker\Generator as Faker;
 
 /* @var Illuminate\Database\Eloquent\Factory $factory */
 
-$factory->define(App\Models\Calender::class, function (Faker $faker) {
+$factory->define(App\Models\Calendar::class, function (Faker $faker) {
     // 初始化定义
     $intStart = time() + (mt_rand(-21, 24) * 3600);
-    $color = array_random(App\Models\Calender::$arrColor, 1);
+    $color = array_random(App\Models\Calendar::$arrColor, 1);
 
     return [
         'title' => $faker->name,

@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\Json;
-use App\Models\Calender;
+use App\Http\Requests\DataTable;
+use App\Models\Calendar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,9 @@ class CalendarsController extends Controller
     public function index()
     {
         // 默认状态信息
-        $status = Calender::getStatus();
-        $timeStatus = Calender::getTimeStatus();
-        $colors = Calender::$arrColor;
+        $status = Calendar::getStatus();
+        $timeStatus = Calendar::getTimeStatus();
+        $colors = Calendar::$arrColor;
 
         // 载入视图
         return view('admin.calendars.index', [
@@ -32,22 +33,28 @@ class CalendarsController extends Controller
         ]);
     }
 
+    /**
+     * 数据搜索处理
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search(Request $request)
     {
         $start = $request->input('start');
         $length = $request->input('length');
-        $order = $request->input('order');
-        $columns = $request->input('columns');
-        $first = $columns[$order[0]['column']]['data'];
-
-        $query = Calender::where('status', '!=', -1)->orderBy($first, $order[0]['dir']);
+        $where = $request->input('where');
+        parse_str($where, $array);
+        $query = Calendar::where('status', '!=', -1);
         $total = $query->count();
 
         return response()->json([
             'draw' => $request->input('draw'),
             'recordsTotal' => $total,
             'recordsFiltered' => $total,
-            'data' => $query->offset($start)->limit($length)->get()
+            'data' => $query->offset($start)->limit($length)->get(),
+            'other' => $array,
+            'sql' => $query->toSql()
         ]);
     }
 
@@ -59,14 +66,14 @@ class CalendarsController extends Controller
     public function me()
     {
         // 默认状态信息
-        $status = Calender::getStatus();
-        $timeStatus = Calender::getTimeStatus();
-        $colors = Calender::$arrColor;
+        $status = Calendar::getStatus();
+        $timeStatus = Calendar::getTimeStatus();
+        $colors = Calendar::$arrColor;
 
         // 查询数据
         $all = DB::table('calendars')->where('status', '=', 0)->orderBy('id', 'desc')->get();
         foreach ($all as &$value) {
-            Calender::handleStyle($value);
+            Calendar::handleStyle($value);
             $value->allDay = true;
         }
 
@@ -89,9 +96,9 @@ class CalendarsController extends Controller
     {
         $array = $request->input();
         unset($array['actionType'], $array['id']);
-        if (!empty($array['style'])) $array['style'] = Calender::style($array['style']);
+        if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
         $array['created_id'] = $array['updated_id'] = 1;
-        if ($calender = Calender::create($array)) {
+        if ($calender = Calendar::create($array)) {
             $this->handleJson($calender, 0);
         } else {
             $this->json['code'] = 1005;
@@ -110,11 +117,11 @@ class CalendarsController extends Controller
     {
         $id = (int)$request->input('id');
         if ($id) {
-            $calendar = Calender::find($id);
+            $calendar = Calendar::find($id);
             if ($calendar) {
                 $array = $request->input();
                 unset($array['actionType']);
-                if (!empty($array['style'])) $array['style'] = Calender::style($array['style']);
+                if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
                 $calendar->fill($array);
                 if ($calendar->save()) {
                     $this->handleJson($calendar);
@@ -139,7 +146,7 @@ class CalendarsController extends Controller
     {
         $id = (int)$request->input('id');
         if ($id) {
-            if (Calender::destroy($id)) {
+            if (Calendar::destroy($id)) {
                 $this->handleJson([]);
             } else {
                 $this->json['code'] = 1006;
@@ -169,7 +176,7 @@ class CalendarsController extends Controller
         ])->get();
 
         foreach ($all as &$value) {
-            Calender::handleStyle($value);
+            Calendar::handleStyle($value);
             $value->allDay = true;
         }
 

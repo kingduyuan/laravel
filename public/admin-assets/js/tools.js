@@ -42,10 +42,10 @@ function ajax(params, message) {
     mixLoading = layer.load();
     return $.ajax(params)
         .always(function(){
-        layer.close(mixLoading);
-    }).fail(function() {
-        layer.msg(message, {icon: 5});
-    });
+            layer.close(mixLoading);
+        }).fail(function() {
+            layer.msg(message, {icon: 5});
+        });
 }
 
 /**
@@ -57,19 +57,19 @@ function ajax(params, message) {
 function getLaravelRequest(params, message) {
     mixLoading = layer.load();
     return $.ajax(params)
-    .always(function(){
-        layer.close(mixLoading);
-    }).fail(function(response) {
-        var html = '';
-        if (response.responseJSON) {
-            html += response.responseJSON.message+ " <br/>";
-            for (var i in response.responseJSON.errors) {
-                html += response.responseJSON.errors[i].join(";") + "<br/>";
+        .always(function(){
+            layer.close(mixLoading);
+        }).fail(function(response) {
+            var html = '';
+            if (response.responseJSON) {
+                html += response.responseJSON.message+ " <br/>";
+                for (var i in response.responseJSON.errors) {
+                    html += response.responseJSON.errors[i].join(";") + "<br/>";
+                }
+            } else {
+                html = message;
             }
-        } else {
-            html = message;
-        }
 
-        layer.msg(html, {icon: 5});
-    });
+            layer.msg(html, {icon: 5});
+        });
 }

@@ -14,6 +14,34 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-12">
+                            <form class="form-inline" id="search-form">
+                                <div class="form-group">
+                                    <label class="sr-only" for="exampleInputEmail3">Email address</label>
+                                    <input type="text" name="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label class="sr-only" for="exampleInputPassword3">Password</label>
+                                    <input type="text" name="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                                </div>
+                                <div class="checkbox">
+                                    <label class="sr-only" for="exampleInputPassword3"> 状态 </label>
+                                    <div class="col-sm-9">
+                                        @foreach($timeStatus as $key => $value)
+                                            <label>
+                                                <input type="checkbox" required="true" number="true" name="time_status[]"
+                                                       @if ($key == 1)
+                                                       checked="checked"
+                                                       @endif
+                                                       class="minimal" value="{{ $key }}">
+                                                {{ $value }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-default">Sign in</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-12">
                             <table id="example2" class="table table-bordered table-hover"></table>
                         </div>
                     </div>
@@ -154,14 +182,20 @@
         $(function () {
             $('#example2').DataTable({
                 'paging': true,
-                'lengthChange': false,
-                'searching': true,
+//                'lengthChange': false,
+                'searching': false,
                 'ordering': true,
                 'info': true,
                 'autoWidth': false,
                 "processing": true,
                 "serverSide": true,
-                "ajax": "{{ url('/admin/calendars/search') }}",
+                "ajax": {
+                    url: "{{ url('/admin/calendars/search') }}",
+                    data: function(d) {
+                       d.where = $("#search-form").serialize();
+                       return d;
+                    }
+                },
                 language: jqueryDataTableLanguage,
                 columns: [
                     {"title": "id", "data": "id"},

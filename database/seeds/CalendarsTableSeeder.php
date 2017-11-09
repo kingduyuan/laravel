@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class CalendersTableSeeder extends Seeder
+class CalendarsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class CalendersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Calender::class, 50)->create();
+        factory(App\Models\Calendar::class, 50)->create();
     }
 }
