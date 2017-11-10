@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/font-awesome.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/ionicons.min.css') }}"/>
+    @stack('style')
     <!-- Theme style -->
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/AdminLTE.min.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/skins/skin-white.css') }}"/>
@@ -17,7 +18,6 @@
     <script type="text/javascript" src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    @stack('style')
 </head>
 <body class="skin-white fixed ">
 <div class="wrapper">
@@ -226,7 +226,7 @@
                 <small> @yield('header_description') </small>
             </h1>
             @hasSection('header_right')
-                <span class="headerElems pull-right">
+                <span class="pull-right" style="float:right;display: block;margin-top: -28px;position: relative">
                     @yield('header_right')
                 </span>
             @else

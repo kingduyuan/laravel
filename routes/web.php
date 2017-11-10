@@ -21,6 +21,13 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         return view('admin.uploads.index');
     })->name('admin.index');
 
+    // 导航栏目
+    Route::get('/menus/index', 'MenusController@index')->name('admin.menus.index');
+    Route::get('/menus/search', 'MenusController@search')->name('admin.menus.search');
+    Route::post('/menus/update', 'MenusController@update')->name('admin.menus.update');
+    Route::post('/menus/create', 'MenusController@create')->name('admin.menus.create');
+    Route::post('/menus/delete', 'MenusController@delete')->name('admin.menus.delete');
+
     // 日程管理
     Route::get('/calendars/index', 'CalendarsController@index')->name('admin.calendars.index');
     Route::get('/calendars/search', 'CalendarsController@search')->name('admin.calendars.search');

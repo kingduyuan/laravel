@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Traits\Json;
-use App\Http\Requests\DataTable;
 use App\Models\Calendar;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

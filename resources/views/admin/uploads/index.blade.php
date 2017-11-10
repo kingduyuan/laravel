@@ -3,7 +3,7 @@
 @section('header_title', trans('admin.upload'))
 @section('header_description', trans('admin.dropFileUpload'))
 @section('header_right')
-    <button id="addNewUploads" class="btn btn-success btn-sm pull-right"> {{ trans('admin.upload') }} </button>
+    <button id="addNewUploads" class="btn btn-info btn-sm pull-right"> {{ trans('admin.upload') }} </button>
 @endsection
 
 @section("main-content")
@@ -23,7 +23,7 @@
         <div class="box-body">
             <div class="row" id="image-lists">
                 <template v-for="item, k in list">
-                    <template v-if="k%4 === 4 || k%4 === 0">
+                    <template v-if="k % 4 === 4 || k % 4 === 0">
                         <div class="col-md-12" >
                     </template>
                     <div class="col-md-3">
