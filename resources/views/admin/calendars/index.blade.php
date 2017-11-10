@@ -14,6 +14,35 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-sm-12">
+                            <div class="col-sm-12" style="margin-bottom: 20px;">
+                                <form class="form-inline" id="searchForm" name="searchForm">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="inputSearchName">名称</label>
+                                        <input type="text" name="name" class="form-control" id="inputSearchName"
+                                               placeholder="导航名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="inputSearchUrl">地址</label>
+                                        <input type="text" name="url" class="form-control" id="inputSearchUrl"
+                                               placeholder="导航地址">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="inputSearchPermissionName">权限名称</label>
+                                        <input type="text" name="permission_name" class="form-control"
+                                               id="inputSearchPermissionName" placeholder="权限名称">
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control select2 pull-left" name="status[]" multiple="multiple"
+                                                id="inputSearchStatus" data-placeholder="选择状态" style="width: 100%;">
+                                            @foreach($status as $key => $value)
+                                                <option value="{{ $key }}">{{ $value }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>搜索</button>
+                                </form>
+                            </div>
+
                             <form class="form-inline" id="search-form">
                                 <div class="form-group">
                                     <label class="sr-only" for="exampleInputEmail3">Email address</label>
