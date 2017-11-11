@@ -41,11 +41,11 @@ var mixLoading = null;
 function ajax(params, message) {
     mixLoading = layer.load();
     return $.ajax(params)
-    .always(function(){
-        layer.close(mixLoading);
-    }).fail(function() {
-        layer.msg(message, {icon: 5});
-    });
+        .always(function () {
+            layer.close(mixLoading);
+        }).fail(function () {
+            layer.msg(message, {icon: 5});
+        });
 }
 
 /**
@@ -57,21 +57,21 @@ function ajax(params, message) {
 function getLaravelRequest(params, message) {
     mixLoading = layer.load();
     return $.ajax(params)
-    .always(function(){
-        layer.close(mixLoading);
-    }).fail(function(response) {
-        var html = '';
-        if (response.responseJSON) {
-            html += response.responseJSON.message+ " <br/>";
-            for (var i in response.responseJSON.errors) {
-                html += response.responseJSON.errors[i].join(";") + "<br/>";
+        .always(function () {
+            layer.close(mixLoading);
+        }).fail(function (response) {
+            var html = '';
+            if (response.responseJSON) {
+                html += response.responseJSON.message + " <br/>";
+                for (var i in response.responseJSON.errors) {
+                    html += response.responseJSON.errors[i].join(";") + "<br/>";
+                }
+            } else {
+                html = message;
             }
-        } else {
-            html = message;
-        }
 
-        layer.msg(html, {icon: 5});
-    });
+            layer.msg(html, {icon: 5});
+        });
 }
 
 /**
@@ -88,36 +88,45 @@ function getValue(arrValue, key, defaultValue) {
 
 // 初始化表单信息
 function initForm(select, data) {
-    var $fm = $(select);
-    var objForm = $fm.get(0); // 获取表单对象
-    if (objForm !== undefined) {
-        $fm.find('input[type=hidden]').val('');
-        $fm.find('input[type=checkbox]').each(function(){$(this).attr('checked', false);if ($(this).get(0)) $(this).get(0).checked = false;});                                                                             // 多选菜单
-        objForm.reset();                                                                // 表单重置
-        if (data !== undefined) {
-            for (var i in data) {
-                // 多语言处理 以及多选配置
-                if (typeof data[i]  ===  'object') {
-                    for (var x in data[i]){
-                        var key = i + '[' + x + ']';
-                        // 对语言
-                        if (objForm[key] !== undefined) {
-                            objForm[key].value = data[i][x];
-                        } else {
-                            // 多选按钮
-                            if (parseInt(data[i][x]) > 0) {
-                                $('input[type=checkbox][name=' + i + '\\[\\]][value=' + data[i][x] + ']').attr('checked', true).each(function(){this.checked=true});
-                            }
-                        }
-                    }
-                }
+    var $fm = $(select),
+        objForm = $fm.get(0); // 获取表单对象
+    if (!objForm) return;
 
-                // 其他除密码的以外的数据
-                if (objForm[i] !== undefined && objForm[i].type !== "password") {
-                    var obj = $(objForm[i]), tmp = data[i];
-                    objForm[i].value = tmp;
+    // 第一步： 表单初始化
+    $fm.find('input[type=hidden]').val('');
+    $fm.find('input[type=checkbox]').each(function () {
+        $(this).attr('checked', false);
+        if ($(this).get(0)) $(this).get(0).checked = false;
+    });                                                                             // 多选菜单
+    objForm.reset();                                                                // 表单重置
+    if (!data) return;
+
+    // 第二步： 表单重新赋值
+    for (var i in data) {
+        // 多语言处理 以及多选配置
+        if (typeof data[i] === 'object') {
+            for (var x in data[i]) {
+                var key = i + '[' + x + ']';
+                // 对语言
+                if (objForm[key] !== undefined) {
+                    objForm[key].value = data[i][x];
+                } else {
+                    // 多选按钮
+                    if (parseInt(data[i][x]) > 0) {
+                        $('input[type=checkbox][name=' + i + '\\[\\]][value=' + data[i][x] + ']').attr('checked', true).each(function () {
+                            this.checked = true
+                        });
+                    }
                 }
             }
         }
+
+        // 其他除密码的以外的数据
+        if (objForm[i] !== undefined && objForm[i].type !== "password") {
+            var obj = $(objForm[i]), tmp = data[i];
+            objForm[i].value = tmp;
+        }
     }
+
+    return true;
 }

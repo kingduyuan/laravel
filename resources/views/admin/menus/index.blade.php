@@ -3,7 +3,7 @@
 @section('header_title', '日程管理')
 @section('header_description', '日程列表')
 @section('header_right')
-    123
+    <button id="create" class="btn btn-success btn-sm pull-right"> {{ trans('admin.upload') }} </button>
 @endsection
 
 @section("main-content")
@@ -193,8 +193,16 @@
             $(document).on("click", "button.table-update", function(e){
                 e.preventDefault();
                 var id = $(this).attr("data-index"), row = $(this).attr("data-row");
-                console.info(id, row, meTable.data()[row]);
                 initForm("#updateForm", meTable.data()[row]);
+                $("#updateForm").prop("action", "{{ url('/admin/menus/update') }}");
+                $("#updateModal").modal();
+            });
+
+            // 表单新增
+            $("#create").click(function(e){
+                e.preventDefault();
+                initForm("#updateForm", null);
+                $("#updateForm").prop("action", "{{ url('/admin/menus/create') }}");
                 $("#updateModal").modal();
             });
 
@@ -204,7 +212,7 @@
                 var $fm = $("#updateForm");
                 if ($fm.validate().form()) {
                     getLaravelRequest({
-                        url: "{{ url('/admin/menus/update') }}",
+                        url: $fm.prop("action"),
                         data: $fm.serialize(),
                         dataType: "json",
                         type: "POST"
