@@ -1,9 +1,9 @@
 @extends("admin.layouts.admin")
 
-@section('header_title', '日程管理')
-@section('header_description', '日程列表')
+@section('header_title', '导航管理')
+@section('header_description', '导航栏目列表')
 @section('header_right')
-    <button id="create" class="btn btn-success btn-sm pull-right"> {{ trans('admin.upload') }} </button>
+    <button id="create" class="btn btn-success btn-sm pull-right"> {{ trans('admin.create') }} </button>
 @endsection
 
 @section("main-content")
