@@ -1,6 +1,16 @@
 <?php
 
 return [
+    // 登录页面
+    'projectName' => 'Laravel Admin 1.0',
+    'projectNameMini' => 'Admin 1.0',
+    'loginDesc' => '请输入你的账号登录后台',
+    'login' => '登录',
+    'logout' => '退出',
+    'email' => '邮箱',
+    'password' => '密码',
+    'rememberMe' => '记住登录状态',
+
     'online' => '在线',
     'poweredBy' => '提供支持',
     'dropFileUpload' => '上传文件',

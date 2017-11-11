@@ -13,6 +13,11 @@ class MenusController extends Controller
 {
     use Json;
 
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
+    }
+
     /**
      * 首页显示
      *

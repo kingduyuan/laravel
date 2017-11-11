@@ -3,7 +3,7 @@
 @section('header_title', '日程管理')
 @section('header_description', '日程列表')
 @section('header_right')
-    123
+    <button id="create" class="btn btn-success btn-sm pull-right"> {{ trans('admin.create') }} </button>
 @endsection
 
 @section("main-content")
@@ -13,61 +13,19 @@
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-12" style="margin-bottom: 20px;">
-                                <form class="form-inline" id="searchForm" name="searchForm">
-                                    <div class="form-group">
-                                        <label class="sr-only" for="inputSearchName">名称</label>
-                                        <input type="text" name="name" class="form-control" id="inputSearchName"
-                                               placeholder="导航名称">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only" for="inputSearchUrl">地址</label>
-                                        <input type="text" name="url" class="form-control" id="inputSearchUrl"
-                                               placeholder="导航地址">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="sr-only" for="inputSearchPermissionName">权限名称</label>
-                                        <input type="text" name="permission_name" class="form-control"
-                                               id="inputSearchPermissionName" placeholder="权限名称">
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control select2 pull-left" name="status[]" multiple="multiple"
-                                                id="inputSearchStatus" data-placeholder="选择状态" style="width: 100%;">
-                                            @foreach($status as $key => $value)
-                                                <option value="{{ $key }}">{{ $value }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>搜索</button>
-                                </form>
-                            </div>
-
-                            <form class="form-inline" id="search-form">
+                        <div class="col-sm-12" style="margin-bottom: 10px;">
+                            <form class="form-inline" id="searchForm" name="searchForm">
                                 <div class="form-group">
-                                    <label class="sr-only" for="exampleInputEmail3">Email address</label>
-                                    <input type="text" name="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+                                    <label for="inputSearchTitle">标题</label>
+                                    <input type="text" name="title" class="form-control" id="inputSearchTitle"
+                                           placeholder="标题">
                                 </div>
                                 <div class="form-group">
-                                    <label class="sr-only" for="exampleInputPassword3">Password</label>
-                                    <input type="text" name="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+                                    <label for="inputSearchDesc">说明</label>
+                                    <input type="text" name="desc" class="form-control" id="inputSearchUrl"
+                                           placeholder="说明">
                                 </div>
-                                <div class="checkbox">
-                                    <label class="sr-only" for="exampleInputPassword3"> 状态 </label>
-                                    <div class="col-sm-9">
-                                        @foreach($timeStatus as $key => $value)
-                                            <label>
-                                                <input type="checkbox" required="true" number="true" name="time_status[]"
-                                                       @if ($key == 1)
-                                                       checked="checked"
-                                                       @endif
-                                                       class="minimal" value="{{ $key }}">
-                                                {{ $value }}
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-default">Sign in</button>
+                                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>搜索</button>
                             </form>
                         </div>
                         <div class="col-sm-12">
@@ -229,10 +187,12 @@
                 language: jqueryDataTableLanguage,
                 columns: [
                     {"title": "id", "data": "id"},
-                    {"title": "标题", "data": "title"},
-                    {"title": "说明", "data": "desc"},
+                    {"title": "标题", "data": "title", "orderable": false},
+                    {"title": "说明", "data": "desc", "orderable": false},
+                    {"title": "开始时间", "data": "start"},
+                    {"title": "结束时间", "data": "end"},
                     {"title": "创建时间", "data": "created_at"},
-                    {"title": "修改事件", "data": "updated_at"}
+                    {"title": "修改时间", "data": "updated_at"}
                 ]
             });
         })

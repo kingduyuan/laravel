@@ -88,6 +88,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-sm-3 control-label" for="inputParent"> 父级分类 </label>
+                                <div class="col-sm-9">
+                                    <select name="parent" id="inputParent" class="form-control">
+                                        <option value="0">顶级分类</option>
+                                        @foreach($parents as $key => $value)
+                                            <option value="{{ $key }}"> {{ $value }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-sm-3 control-label"> 状态 </label>
                                 <div class="col-sm-9">
                                     @foreach($status as $key => $value)
@@ -100,6 +111,13 @@
                                             {{ $value }}
                                         </label>
                                     @endforeach
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="input-sort"> 排序 </label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="input-name" required="true" number="true"
+                                           name="sort" class="form-control"/>
                                 </div>
                             </div>
                         </fieldset>
@@ -171,6 +189,7 @@
                         return '<span class="label ' + getValue(arrColors, data, 'label-info') + '">' + getValue(arrStatus, data, data) + '</span>';
                     }
                     },
+                    {"title": "排序", "data": "sort", "name": "sort"},
                     {"title": "创建时间", "data": "created_at"},
                     {"title": "修改时间", "data": "updated_at"},
                     {
@@ -217,7 +236,7 @@
                         dataType: "json",
                         type: "POST"
                     }).done(function(json){
-                        layer.msg(json.message, {icon: json.code === 0 ? 6 : 5});
+                        layer.msg(json.message, {icon: json.code === 0 ? 6 : 5, time: 500});
                         if (json.code === 0) {
                             $("#updateModal").modal("hide");
                             meTable.ajax.reload();

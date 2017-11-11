@@ -10,16 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+/* @var \Illuminate\Support\Facades\Route */
+
+use \Illuminate\Support\Facades\Route;
+use \Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
-
     Route::get('/', function () {
-        return view('admin.uploads.index');
+        return view('admin.index.index');
     })->name('admin.index');
+    Route::get('/index', function () {
+        return view('admin.index.index');
+    })->name('admin.index');
+
+    // 用户登录和退出
+    Route::get('/login', 'LoginController@showLoginForm')->name('admin.login.form');
+    Route::post('/login', 'LoginController@login')->name('admin.login');
+    Route::post('/logout', 'LoginController@logout')->name('admin.logout');
 
     // 导航栏目
     Route::get('/menus/index', 'MenusController@index')->name('admin.menus.index');
@@ -45,3 +56,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
     Route::post('/uploads/update', 'UploadsController@update')->name('admin.uploads.update');
     Route::get('/uploads/download', 'UploadsController@download')->name('admin.uploads.download');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

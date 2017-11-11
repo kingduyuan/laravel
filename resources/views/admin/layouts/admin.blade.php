@@ -1,33 +1,22 @@
-<!DOCTYPE html>
+<?php
+$user = \Illuminate\Support\Facades\Auth::user();
+$strUserAvatar = $user && $user->avatar ? $user->avatar : asset('admin-assets/img/avatar.png');
+$strUserName = $user && $user->name ? $user->name : 'admin';
+$strUserCreatedAt = $user && $user->created_at ? $user->created_at : date('Y-m-d H:i:s');
+?>
+        <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Uploaded images & files - LaraAdmin 1.0</title>
-    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Bootstrap 3.3.4 -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/bootstrap.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/font-awesome.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/ionicons.min.css') }}"/>
-    @stack('style')
-    <!-- Theme style -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/AdminLTE.min.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('admin-assets/css/skins/skin-white.css') }}"/>
-    <!--[if lt IE 9]>
-    <script type="text/javascript" src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script type="text/javascript" src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    @include('admin.common.header')
 </head>
-<body class="skin-white fixed ">
+<body class=" hold-transition sidebar-mini skin-white">
 <div class="wrapper">
     <!-- Main Header -->
     <header class="main-header">
         <!-- Logo -->
         <a href="{{ route('admin.index')  }}" class="logo">
-            <span class="logo-mini"><b>Laravel</b></span>
-            <span class="logo-lg"><b>Laravel</b>
-		    Admin 1.0</span>
+            <span class="logo-mini"><b>{{ trans('admin.projectNameMini') }}</b></span>
+            <span class="logo-lg"><b>{{ trans('admin.projectName') }}</b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -136,39 +125,52 @@
                         <!-- Menu Toggle Button -->
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             <!-- The user image in the navbar-->
-                            <img src="http://www.gravatar.com/avatar/77eddd4a460eb5af5db6b7911926f7f5.jpg?s=80&amp;d=mm&amp;r=g"
+                            <img src="{{ $strUserAvatar }}"
                                  class="user-image" alt="User Image"/>
                             <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">admin</span>
+                            <span class="hidden-xs">{{ $strUserName }}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <!-- The user image in the menu -->
                             <li class="user-header">
-                                <img src="http://www.gravatar.com/avatar/77eddd4a460eb5af5db6b7911926f7f5.jpg?s=80&amp;d=mm&amp;r=g"
+                                <img src="{{ $strUserAvatar }}"
                                      class="img-circle" alt="User Image"/>
                                 <p>
-                                    admin
-                                    <small>Member since Nov. 2017</small>
+                                    {{ $strUserName }}
+                                    <small>{{ $strUserCreatedAt }}</small>
                                 </p>
                             </li>
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/lacodeeditor"><i class="fa fa-code"></i>
-                                        <span>Editor</span></a>
+                                    <a href="http://laravel-admin.com/admin/lacodeeditor">
+                                        <i class="fa fa-code"></i>
+                                        <span>Editor</span>
+                                    </a>
                                 </div>
                                 <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/modules"><i class="fa fa-cubes"></i> <span>Modules</span></a>
+                                    <a href="http://laravel-admin.com/admin/modules">
+                                        <i class="fa fa-cubes"></i>
+                                        <span>Modules</span>
+                                    </a>
                                 </div>
                                 <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/la_menus"><i class="fa fa-bars"></i> <span>Menus</span></a>
+                                    <a href="http://laravel-admin.com/admin/la_menus">
+                                        <i class="fa fa-bars"></i>
+                                        <span>Menus</span>
+                                    </a>
                                 </div>
                                 <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/la_configs"><i class="fa fa-cogs"></i>
-                                        <span>Configure</span></a>
+                                    <a href="http://laravel-admin.com/admin/la_configs">
+                                        <i class="fa fa-cogs"></i>
+                                        <span>Configure</span>
+                                    </a>
                                 </div>
                                 <div class="col-xs-6 text-center">
-                                    <a href="http://laravel-admin.com/admin/backups"><i class="fa fa-hdd-o"></i> <span>Backups</span></a>
+                                    <a href="http://laravel-admin.com/admin/backups">
+                                        <i class="fa fa-hdd-o"></i>
+                                        <span>Backups</span>
+                                    </a>
                                 </div>
                             </li>
                             <!-- Menu Footer-->
@@ -177,8 +179,15 @@
                                     <a href="http://laravel-admin.com/admin/users/1" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="http://laravel-admin.com/logout" class="btn btn-default btn-flat">Sign
-                                        out</a>
+                                    <a href="{{ url('admin/logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();"
+                                       class="btn btn-default btn-flat">
+                                        {{ trans('admin.logout') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ route('admin.logout') }}" method="POST"
+                                          style="display: none;">
+                                        {{ csrf_field() }}
+                                    </form>
                                 </div>
                             </li>
                         </ul>
@@ -196,24 +205,22 @@
 
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
-
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel">
                 <div class="pull-left image">
-                    <img src="http://www.gravatar.com/avatar/77eddd4a460eb5af5db6b7911926f7f5.jpg?s=80&amp;d=mm&amp;r=g"
-                         class="img-circle" alt="User Image"/>
+                    <img src="{{ $strUserAvatar }}" class="img-circle" alt="User Image"/>
                 </div>
                 <div class="pull-left info">
-                    <p> admin </p>
+                    <p>{{ $strUserName }}</p>
                     <!-- Status -->
                     <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('admin.online') }}</a>
                 </div>
             </div>
 
             <!-- Sidebar Menu -->
-            @include('admin.layouts.menu')
+            @include('admin.common.menu')
         </section>
         <!-- /.sidebar -->
     </aside>
@@ -231,7 +238,8 @@
                 </span>
             @else
                 <ol class="breadcrumb">
-                    <li><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> {{ trans('admin.home') }} </a></li>
+                    <li><a href="{{ route('admin.index') }}"><i class="fa fa-dashboard"></i> {{ trans('admin.home') }}
+                        </a></li>
                     @foreach ($breadCrumb as $item)
                         @if ($loop->last)
                             <li class="active">{{ $item['label'] }}</li>
@@ -258,18 +266,18 @@
         <strong>Copyright &copy; 2016</strong>
     </footer>
 </div>
-
-<!-- jQuery 2.1.4 -->
-<script type="text/javascript" src="{{ asset('admin-assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
-<!-- Bootstrap 3.3.2 JS -->
-<script type="text/javascript" src="{{ asset('admin-assets/js/bootstrap.min.js') }}"></script>
+@include('admin.common.js')
 <!-- AdminLTE App -->
-<script type="text/javascript" src="{{ asset('admin-assets/js/app.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('admin-assets/plugins/stickytabs/jquery.stickytabs.js') }}"></script>
-<script type="text/javascript" src="{{ asset('admin-assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/layer/layer.js') }}"></script>
-<script type="text/javascript" src="{{ asset('admin-assets/js/tools.js') }}"></script>
+<script src="{{ asset('admin-assets/js/app.min.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/stickytabs/jquery.stickytabs.js') }}"></script>
+<script src="{{ asset('admin-assets/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('js/layer/layer.js') }}"></script>
+<script src="{{ asset('admin-assets/js/tools.js') }}"></script>
 @stack('script')
+<script>
+    $("#admin-menus").find("li[data-url='" + (currentUrl ? currentUrl : "/") + "']")
+        .addClass("active").parent("ul").parent("li").addClass("active");
+</script>
 </body>
 </html>
 

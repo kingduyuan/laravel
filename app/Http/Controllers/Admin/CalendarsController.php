@@ -47,6 +47,23 @@ class CalendarsController extends Controller
         $query = Calendar::where('status', '!=', -1);
         $total = $query->count();
 
+        // 处理排序
+        $orderBy = $request->input('order');
+        $columns = $request->input('columns');
+        $order = [];
+        if ($orderBy) {
+            foreach ($orderBy as $value) {
+                $key = $value['column'];
+                if (isset($columns[$key])) {
+                    $order[$columns[$key]['data']] = $value['dir'];
+                }
+            }
+        }
+
+        foreach ($order as $key => $value) {
+            $query->orderBy($key, $value);
+        }
+
         return response()->json([
             'draw' => $request->input('draw'),
             'recordsTotal' => $total,

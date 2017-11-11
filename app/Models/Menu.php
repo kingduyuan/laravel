@@ -4,6 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Menu
+ *
+ * @package App\Models
+ * @property integer $id
+ * @property integer $parent
+ * @property integer $status
+ */
 class Menu extends Model
 {
     /**
@@ -48,5 +56,36 @@ class Menu extends Model
         if ($intStatus !== null) $mixReturn = isset($mixReturn[$intStatus]) ? $mixReturn[$intStatus] : null;
 
         return $mixReturn;
+    }
+
+    /**
+     * 获取权限对应的导航栏目信息
+     *
+     * @return array
+     */
+    public static function getPermissionMenus()
+    {
+        // 查询数据
+        $arrReturn = [];
+        $all = self::where('status', '=', self::STATUS_ENABLES)
+            ->select('id', 'name', 'url', 'icon', 'parent', 'sort')->get();
+        if ($all) {
+            foreach ($all as $value) {
+                /* @var $value \App\Models\Menu */
+                $arrValue = $value->toArray();
+                if ($value->parent == 0) {
+                    $default = isset($arrReturn[$value->id]) ? $arrReturn[$value->id] : ['child' => []];
+                    $arrReturn[$value->id] = array_merge($default, $arrValue);
+                } else {
+                    if (isset($arrReturn[$value->parent])) {
+                        $arrReturn[$value->parent]['child'][] = $arrValue;
+                    } else {
+                        $arrReturn[$value->parent] = ['child' => [$arrValue]];
+                    }
+                }
+            }
+        }
+
+        return $arrReturn;
     }
 }
