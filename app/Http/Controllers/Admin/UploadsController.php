@@ -19,6 +19,11 @@ class UploadsController extends Controller
 {
     use Json;
 
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
     /**
      * 首页显示
      *

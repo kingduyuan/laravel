@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
 /**
  * Class Admin
  * @package App\Models
  */
 class Admin extends \Illuminate\Foundation\Auth\User
 {
+    use EntrustUserTrait;
+
     /**
      * 开启状态
      */
@@ -33,4 +37,22 @@ class Admin extends \Illuminate\Foundation\Auth\User
      */
     protected $guarded = [];
 
+    /**
+     * 获取状态信息
+     *
+     * @param null $intStatus 状态值
+     * @return array|mixed
+     */
+    public static function getStatus($intStatus = null)
+    {
+        $mixReturn = [
+            self::STATUS_ENABLES => '启用',
+            self::STATUS_DISABLES => '停用',
+            self::STATUS_DELETE => '删除',
+        ];
+
+        if ($intStatus !== null) $mixReturn = isset($mixReturn[$intStatus]) ? $mixReturn[$intStatus] : null;
+
+        return $mixReturn;
+    }
 }
