@@ -10,11 +10,12 @@ class AdminAuth
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
+     * @param array $guards
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, ...$guards)
     {
         if (Auth::guard('admin')->guest()) {
             if ($request->ajax() || $request->wantsJson()) {
@@ -23,6 +24,8 @@ class AdminAuth
                 return redirect()->guest('admin/login');
             }
         }
+
+        Auth::shouldUse($guards ? $guards : 'admin');
 
         return $next($request);
     }
