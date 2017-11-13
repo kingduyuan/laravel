@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Helper;
+use App\Models\Admin;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -52,6 +53,14 @@ class RolesController extends Controller
         $model->display_name = $request->input('display_name');
         $model->description = $request->input('description');
         if ($model->save()) {
+            // 添加权限
+            if ($model->getTable === 'roles') {
+                $user = Admin::where(['id' => 1])->first();
+                if ($user) $user->roles()->attach($model->id);
+            } else {
+                $role = Role::where(['name' => 'admin'])->first();
+                if ($role) $role->perms()->attach($model->id);
+            }
             $this->handleJson($model, 0);
         } else {
             $this->json['code'] = 1005;
@@ -73,7 +82,7 @@ class RolesController extends Controller
         if (!$id) return $this->error();
 
         // 第二步: 查询数据是否存在
-        /* @var $menu \App\Models\Role */
+        /* @var $modelName \App\Models\Role */
         $modelName = $this->model;
         $model = $modelName::find($id);
         if (!$model) return $this->error(1002);
@@ -86,33 +95,6 @@ class RolesController extends Controller
             $this->handleJson($model);
         } else {
             $this->json['code'] = 1007;
-        }
-
-        return $this->returnJson();
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete(Request $request)
-    {
-        // 第一步: 验证请求数据
-        $id = (int)$request->input('id');
-        if (!$id) return $this->error();
-
-        // 第二步: 查询数据是否存在
-        $modelName = $this->model;
-        $model = $modelName::find($id);
-        if (!$model) return $this->error(1002);
-
-        // 删除数据
-        if ($model->delete()) {
-            $this->handleJson([]);
-        } else {
-            $this->json['code'] = 1006;
         }
 
         return $this->returnJson();

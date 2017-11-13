@@ -74,7 +74,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="input-icon"> 显示名称 </label>
                                 <div class="col-sm-9">
-                                    <input type="text" id="input-icon" required="true" value="fa-cube"
+                                    <input type="text" id="input-icon" required="true"
                                            rangelength="[2, 255]"
                                            name="display_name" class="form-control"/>
                                 </div>

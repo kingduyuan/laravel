@@ -156,8 +156,13 @@ class Controller extends \App\Http\Controllers\Controller
         $id = $request->input($model->getKeyName());
         if (!$id) return $this->error();
 
-        // 第二步：删除数据
-        if ($model::destroy($id)) {
+        // 第二步: 查询数据是否存在
+        $modelName = $this->model;
+        $model = $modelName::find($id);
+        if (!$model) return $this->error(1002);
+
+        // 删除数据
+        if ($model->delete()) {
             $this->handleJson([]);
         } else {
             $this->json['code'] = 1006;
