@@ -30,7 +30,7 @@
                                     <input type="text" name="permission_name" class="form-control"
                                            id="inputSearchPermissionName" placeholder="权限名称">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" style="min-width:200px;">
                                     <select class="form-control select2 pull-left" name="status[]" multiple="multiple"
                                             id="inputSearchStatus" data-placeholder="选择状态" style="width: 100%;">
                                         @foreach($status as $key => $value)
@@ -153,6 +153,7 @@
                 arrStatus = @json($status, 320),
                 arrColors = {"10": "label-success", "0": "label-warning", "-1": "label-danger"};
             var meTable = $('#example2').DataTable({
+                "dom": "t<'row'<'col-xs-6'li><'col-xs-6'p>>",
                 'paging': true,
 //                'lengthChange': false,
                 "lengthMenu": [15, 30, 50, 100],

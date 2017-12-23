@@ -158,33 +158,34 @@
 @push('style')
     <link rel="stylesheet" type="text/css"
           href="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/css/dataTables.bootstrap.min.css') }}"/>
+    <style>
+        div.table-page div {
+            float: left;
+        }
+
+        div.dataTables_length {
+            margin-right: 5px;
+            line-height: 35px;
+        }
+    </style>
 @endpush
 @push("script")
     <script src="{{ asset('admin-assets/plugins/slimscroll/jquery.slimscroll.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/datatables/DataTables-1.10.12/js/dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin-assets/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <!-- Page specific script -->
+    <script src="{{ asset('admin-assets/plugins/table/table.js') }}"></script>
     <script>
         $(function () {
-            $('#example2').DataTable({
-                'paging': true,
-//                'lengthChange': false,
-               "lengthMenu": [15, 30, 50, 100],
-                'searching': false,
-                'ordering': true,
-                'info': true,
-                'autoWidth': false,
-                "processing": true,
-                "serverSide": true,
+            $('#example2').table({
+                "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
                 "ajax": {
                     url: "{{ url('/admin/calendars/search') }}",
-                    data: function(d) {
-                       d.where = $("#search-form").serialize();
-                       return d;
+                    data: function (d) {
+                        d.where = $("#search-form").serialize();
+                        return d;
                     }
                 },
-                language: jqueryDataTableLanguage,
                 columns: [
                     {"title": "id", "data": "id"},
                     {"title": "标题", "data": "title", "orderable": false},
@@ -195,6 +196,8 @@
                     {"title": "修改时间", "data": "updated_at"}
                 ]
             });
+        }, {
+            url: "{{ url('/admin/calendars/search') }}"
         })
     </script>
 @endpush
