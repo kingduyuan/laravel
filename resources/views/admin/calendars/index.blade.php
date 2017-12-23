@@ -177,27 +177,27 @@
     <script src="{{ asset('admin-assets/plugins/table/table.js') }}"></script>
     <script>
         $(function () {
-            $('#example2').table({
-                "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
-                "ajax": {
-                    url: "{{ url('/admin/calendars/search') }}",
-                    data: function (d) {
-                        d.where = $("#search-form").serialize();
-                        return d;
-                    }
-                },
-                columns: [
-                    {"title": "id", "data": "id"},
-                    {"title": "标题", "data": "title", "orderable": false},
-                    {"title": "说明", "data": "desc", "orderable": false},
-                    {"title": "开始时间", "data": "start"},
-                    {"title": "结束时间", "data": "end"},
-                    {"title": "创建时间", "data": "created_at"},
-                    {"title": "修改时间", "data": "updated_at"}
-                ]
+            var table = meTables({
+                "table": {
+                    "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
+                    "ajax": {
+                        url: "{{ url('/admin/calendars/search') }}",
+                        data: function (d) {
+                            d.where = $("#search-form").serialize();
+                            return d;
+                        }
+                    },
+                    columns: [
+                        {"title": "id", "data": "id"},
+                        {"title": "标题", "data": "title", "orderable": false},
+                        {"title": "说明", "data": "desc", "orderable": false},
+                        {"title": "开始时间", "data": "start"},
+                        {"title": "结束时间", "data": "end"},
+                        {"title": "创建时间", "data": "created_at"},
+                        {"title": "修改时间", "data": "updated_at"}
+                    ]
+                }
             });
-        }, {
-            url: "{{ url('/admin/calendars/search') }}"
         })
     </script>
 @endpush
