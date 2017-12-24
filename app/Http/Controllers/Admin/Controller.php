@@ -92,6 +92,7 @@ class Controller extends \App\Http\Controllers\Controller
             'recordsFiltered' => $total,
             'data' => $query->offset($start)->limit($length)->get(),
             'code' => 0,
+            'params' => $request->input('params'),
             'sql' => $query->toSql()
         ]);
     }

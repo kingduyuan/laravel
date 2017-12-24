@@ -39,6 +39,7 @@
         // 初始化配置信息
         _construct: function (options) {
 			this.options = this.extend(this.options, options);
+
             // 判断添加数据(多选)
             if (this.options.checkbox) {
                 this.options.table.columns.unshift(this.options.checkbox);
@@ -59,6 +60,18 @@
                 "paginationType": "full_numbers",
                 "language": this.getLanguage("dataTables", "*")
             }, this.options.table);
+
+            // 没有配置地址
+            if (!this.options.table.ajax) {
+                var self = this;
+                this.options.table.ajax = {
+                    url: self.getUrl("search"),
+                    data: function (d) {
+                        d.where = $(self.options.searchForm).serialize();
+                        return d;
+                    }
+                }
+            }
 
             this.uniqueName = this.options.sTable.replace("#", "");
 

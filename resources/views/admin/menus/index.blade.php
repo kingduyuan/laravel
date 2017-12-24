@@ -105,7 +105,6 @@
                                 return d;
                             }
                         },
-
                         columns: [
                             {"title": "id", "data": "id", "edit": {type: "hidden"}, "defaultOrder": "asc"},
                             {
