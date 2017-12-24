@@ -96,8 +96,6 @@
             var table = meTables({
                 "title": "日程管理",
                 "sTable": "#me-table",
-                // "sModal": "#calendarModal",
-                // "sFromId": "#edit-form-calendars",
                 "table": {
                     "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
                     "ajax": {
