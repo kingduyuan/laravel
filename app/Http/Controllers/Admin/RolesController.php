@@ -14,7 +14,7 @@ class RolesController extends Controller
     /**
      * @var string 定义使用的model
      */
-    public $model = 'App\\Models\\Role';
+    public $model = 'App\Models\Role';
 
     /**
      * 首页显示
@@ -54,7 +54,7 @@ class RolesController extends Controller
         $model->description = $request->input('description');
         if ($model->save()) {
             // 添加权限
-            if ($model->getTable === 'roles') {
+            if ($model->getTable() === 'roles') {
                 $user = Admin::where(['id' => 1])->first();
                 if ($user) $user->roles()->attach($model->id);
             } else {

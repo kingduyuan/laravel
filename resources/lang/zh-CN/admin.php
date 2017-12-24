@@ -36,6 +36,7 @@ return [
     'confirmFileDelete' => '确定需要删除这个文件?',
 
     // 日程管理
+    'selfCalendars' => '我的日程',
     'createEvent' => '添加事件',
     'draggableEvents' => '可拖动事件',
     'removeAfterDrop' => '移动后删除',

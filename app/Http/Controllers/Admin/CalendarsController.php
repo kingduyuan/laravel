@@ -49,11 +49,59 @@ class CalendarsController extends Controller
     }
 
     /**
+     * 创建数据
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(Request $request)
+    {
+        $array = $request->input();
+        unset($array['actionType'], $array['id']);
+        if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
+        $array['created_id'] = $array['updated_id'] = 1;
+        if ($calender = Calendar::create($array)) {
+            return $this->success($calender);
+        } else {
+            return $this->error(1005);
+        }
+    }
+
+    /**
+     * 修改事件信息
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request)
+    {
+        $id = (int)$request->input('id');
+        if ($id <= 0) {
+            return $this->error();
+        }
+
+        $calendar = Calendar::find($id);
+        if (empty($calendar)) {
+            return $this->error(1002);
+        }
+
+        $array = $request->input();
+        unset($array['actionType']);
+        if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
+        $calendar->fill($array);
+        if ($calendar->save()) {
+            return $this->success($calendar);
+        } else {
+            return $this->error(1007);
+        }
+    }
+
+    /**
      * 我的日程管理显示
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function me()
+    public function self()
     {
         // 默认状态信息
         $status = Calendar::getStatus();
@@ -61,14 +109,14 @@ class CalendarsController extends Controller
         $colors = Calendar::$arrColor;
 
         // 查询数据
-        $all = DB::table('calendars')->where('status', '=', 0)->orderBy('id', 'desc')->get();
+        $all = DB::table('calendars')->where('status', '=', 0)
+            ->orderBy('id', 'desc')->get();
         foreach ($all as &$value) {
             Calendar::handleStyle($value);
-            $value->allDay = true;
         }
 
         // 载入视图
-        return view('admin.calendars.me', [
+        return view('admin.calendars.self', [
             'status' => $status,
             'timeStatus' => $timeStatus,
             'colors' => $colors,
@@ -97,7 +145,7 @@ class CalendarsController extends Controller
 
         foreach ($all as &$value) {
             Calendar::handleStyle($value);
-            $value->allDay = true;
+//            $value->allDay = true;
         }
 
         return response()->json($all);

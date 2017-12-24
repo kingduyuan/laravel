@@ -58,7 +58,7 @@ trait Json
      * @param  string $message 提示信息，默认为空
      * @return \Illuminate\Http\JsonResponse
      */
-    public function succes($data, $message = '')
+    public function success($data, $message = '')
     {
         return $this->returnJson([
             'code' => 0,

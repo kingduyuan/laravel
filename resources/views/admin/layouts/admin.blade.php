@@ -143,35 +143,35 @@ $strUserCreatedAt = $user && $user->created_at ? $user->created_at : date('Y-m-d
                             <!-- Menu Body -->
                             <li class="user-body">
                                 <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/lacodeeditor">
-                                        <i class="fa fa-code"></i>
-                                        <span>Editor</span>
+                                    <a href="{{ url('admin/calendars/self')  }}">
+                                        <i class="fa fa-calendar"></i>
+                                        <span>{{trans('admin.selfCalendars')}}</span>
                                     </a>
                                 </div>
-                                <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/modules">
-                                        <i class="fa fa-cubes"></i>
-                                        <span>Modules</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/la_menus">
-                                        <i class="fa fa-bars"></i>
-                                        <span>Menus</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-6 text-center mb10">
-                                    <a href="http://laravel-admin.com/admin/la_configs">
-                                        <i class="fa fa-cogs"></i>
-                                        <span>Configure</span>
-                                    </a>
-                                </div>
-                                <div class="col-xs-6 text-center">
-                                    <a href="http://laravel-admin.com/admin/backups">
-                                        <i class="fa fa-hdd-o"></i>
-                                        <span>Backups</span>
-                                    </a>
-                                </div>
+                                {{--<div class="col-xs-6 text-center mb10">--}}
+                                    {{--<a href="http://laravel-admin.com/admin/modules">--}}
+                                        {{--<i class="fa fa-cubes"></i>--}}
+                                        {{--<span>Modules</span>--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-xs-6 text-center mb10">--}}
+                                    {{--<a href="http://laravel-admin.com/admin/la_menus">--}}
+                                        {{--<i class="fa fa-bars"></i>--}}
+                                        {{--<span>Menus</span>--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-xs-6 text-center mb10">--}}
+                                    {{--<a href="http://laravel-admin.com/admin/la_configs">--}}
+                                        {{--<i class="fa fa-cogs"></i>--}}
+                                        {{--<span>Configure</span>--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
+                                {{--<div class="col-xs-6 text-center">--}}
+                                    {{--<a href="http://laravel-admin.com/admin/backups">--}}
+                                        {{--<i class="fa fa-hdd-o"></i>--}}
+                                        {{--<span>Backups</span>--}}
+                                    {{--</a>--}}
+                                {{--</div>--}}
                             </li>
                             <!-- Menu Footer-->
                             <li class="user-footer">

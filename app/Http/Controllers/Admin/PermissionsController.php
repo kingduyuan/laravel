@@ -12,7 +12,7 @@ class PermissionsController extends RolesController
     /**
      * @var string 定义使用的model
      */
-    public $model = 'App\\Models\\Permission';
+    public $model = 'App\Models\Permission';
 
     /**
      * 首页显示
