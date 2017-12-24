@@ -97,14 +97,7 @@
                     "sTable": "#example2",
                     "title": "导航栏目",
                     "table": {
-                        "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
-                        "ajax": {
-                            url: "{{ url('/admin/menus/search') }}",
-                            data: function (d) {
-                                d.where = $("#search-form").serialize();
-                                return d;
-                            }
-                        },
+                        dom: "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
                         columns: [
                             {"title": "id", "data": "id", "edit": {type: "hidden"}, "defaultOrder": "asc"},
                             {

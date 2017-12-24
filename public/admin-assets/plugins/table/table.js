@@ -38,7 +38,7 @@
 
         // 初始化配置信息
         _construct: function (options) {
-			this.options = this.extend(this.options, options);
+            this.options = this.extend(this.options, options);
 
             // 判断添加数据(多选)
             if (this.options.checkbox) {
@@ -75,7 +75,7 @@
 
             this.uniqueName = this.options.sTable.replace("#", "");
 
-			return this.init();
+            return this.init();
         },
 
         // 初始化整个 meTables
@@ -83,7 +83,7 @@
             this.action = "init";
             this.initRender();
             // 初始化主要表格
-            this.table = $(this.options.sTable).DataTable(this.options.table);	
+            this.table = $(this.options.sTable).DataTable(this.options.table);  
             var self = this;
             // 搜索表单的事件
             if (this.options.bEvent) {
@@ -313,7 +313,7 @@
                 shade: this.options.oViewConfig.shade,
                 shadeClose: this.options.oViewConfig.shadeClose,
                 title: self.options.title + self.getLanguage("sInfo"),
-                content: $("#data-detail-" + self.uniqueName).removeClass("hide"), 			// 捕获的元素
+                content: $("#data-detail-" + self.uniqueName).removeClass("hide"),          // 捕获的元素
                 area: this.options.oViewConfig.area,
                 cancel: function (index) {
                     layer.close(index);
@@ -973,8 +973,8 @@
             sModal: "",                 // 编辑Modal选择器
             title: "",                  // 表格的标题
             language: "zh-cn",          // 使用语言
-            sTable: "#show-table", 	    // 显示表格选择器
-            sFormId: "",		        // 编辑表单选择器
+            sTable: "#show-table",      // 显示表格选择器
+            sFormId: "",                // 编辑表单选择器
             // 需要多选框
             checkbox: {
                 "data": null,
@@ -985,9 +985,9 @@
                 "createdCell": function (td, data, array, row, col) {
                     $(td).html('<input type="checkbox" class="input-checkbox" value="' + row + '" data-row="' + row + '" />');
                 }
-            },			    
-            params: null,				// 请求携带参数
-            searchForm: "#search-form",	// 搜索表单选择器
+            },              
+            params: null,               // 请求携带参数
+            searchForm: "#search-form", // 搜索表单选择器
             bEvent: true,               // 是否监听事件
             searchInputEvent: "blur",   // 搜索表单input事件
             searchSelectEvent: "change",// 搜索表单select事件
@@ -1014,12 +1014,12 @@
             },
 
             // 表单编辑其他信息
-            editFormParams: {				// 编辑表单配置
+            editFormParams: {               // 编辑表单配置
                 bMultiCols: false,          // 是否多列
                 iColsLength: 1,             // 几列
                 aCols: [3, 9],              // label 和 input 栅格化设置
-                sModalClass: "",			// 弹出模块框配置
-                sModalDialogClass: ""		// 弹出模块的class
+                sModalClass: "",            // 弹出模块框配置
+                sModalDialogClass: ""       // 弹出模块的class
             },
 
             // 关于详情的配置
@@ -1039,6 +1039,7 @@
 
             // 关于地址配置信息
             url: {
+                search: "search",
                 create: "create",
                 update: "update",
                 delete: "delete",
@@ -1086,7 +1087,7 @@
 
                 // dataTables 表格
                 dataTables: {
-					"decimal": "",
+                    "decimal": "",
                     "emptyTable": "没有数据呢 ^.^",
                     "info": "显示 _START_ 到 _END_ 共有 _TOTAL_ 条数据",
                     "infoEmpty": "无记录",

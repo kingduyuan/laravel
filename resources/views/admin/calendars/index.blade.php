@@ -97,14 +97,7 @@
                 "title": "日程管理",
                 "sTable": "#me-table",
                 "table": {
-                    "dom": "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
-                    // "ajax": {
-                    //     url: "{{ url('/admin/calendars/search') }}",
-                    //     data: function (d) {
-                    //         d.where = $("#search-form").serialize();
-                    //         return d;
-                    //     }
-                    // },
+                    dom: "t<'row'<'table-page col-sm-4'li><'col-sm-8'p>>",
                     columns: [
                         {"title": "id", "data": "id", "defaultOrder": "desc", "edit": {"type": "hidden"}},
                         {"title": "标题", "data": "title", "orderable": false, 
