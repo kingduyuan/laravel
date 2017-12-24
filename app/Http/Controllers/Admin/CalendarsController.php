@@ -5,12 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Admin\Traits\Json;
 use App\Models\Calendar;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class CalendarsController extends Controller
 {
-    use Json;
+    /**
+     * @var string 定义使用的model
+     */
+    public $model = '\App\Models\Calendar';
+
+    /**
+     * 处理显示查询参数配置
+     *
+     * @param array $params
+     * @return array
+     */
+    public function where($params)
+    {
+        return [
+            'desc' => 'like',
+            'title' => 'like'
+        ];
+    }
 
     /**
      * 首页显示
@@ -29,48 +45,6 @@ class CalendarsController extends Controller
             'status' => $status,
             'timeStatus' => $timeStatus,
             'colors' => $colors,
-        ]);
-    }
-
-    /**
-     * 数据搜索处理
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function search(Request $request)
-    {
-        $start = $request->input('start');
-        $length = $request->input('length');
-        $where = $request->input('where');
-        parse_str($where, $array);
-        $query = Calendar::where('status', '!=', -1);
-        $total = $query->count();
-
-        // 处理排序
-        $orderBy = $request->input('order');
-        $columns = $request->input('columns');
-        $order = [];
-        if ($orderBy) {
-            foreach ($orderBy as $value) {
-                $key = $value['column'];
-                if (isset($columns[$key])) {
-                    $order[$columns[$key]['data']] = $value['dir'];
-                }
-            }
-        }
-
-        foreach ($order as $key => $value) {
-            $query->orderBy($key, $value);
-        }
-
-        return response()->json([
-            'draw' => $request->input('draw'),
-            'recordsTotal' => $total,
-            'recordsFiltered' => $total,
-            'data' => $query->offset($start)->limit($length)->get(),
-            'other' => $array,
-            'sql' => $query->toSql()
         ]);
     }
 
@@ -100,76 +74,6 @@ class CalendarsController extends Controller
             'colors' => $colors,
             'calendars' => $all
         ]);
-    }
-
-    /**
-     * 创建数据
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(Request $request)
-    {
-        $array = $request->input();
-        unset($array['actionType'], $array['id']);
-        if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
-        $array['created_id'] = $array['updated_id'] = 1;
-        if ($calender = Calendar::create($array)) {
-            $this->handleJson($calender, 0);
-        } else {
-            $this->json['code'] = 1005;
-        }
-
-        return $this->returnJson();
-    }
-
-    /**
-     * 修改事件信息
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function update(Request $request)
-    {
-        $id = (int)$request->input('id');
-        if ($id) {
-            $calendar = Calendar::find($id);
-            if ($calendar) {
-                $array = $request->input();
-                unset($array['actionType']);
-                if (!empty($array['style'])) $array['style'] = Calendar::style($array['style']);
-                $calendar->fill($array);
-                if ($calendar->save()) {
-                    $this->handleJson($calendar);
-                } else {
-                    $this->json['code'] = 1007;
-                }
-            } else {
-                $this->json['code'] = 1002;
-            }
-        }
-
-        return $this->returnJson();
-    }
-
-    /**
-     * 删除数据
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function delete(Request $request)
-    {
-        $id = (int)$request->input('id');
-        if ($id) {
-            if (Calendar::destroy($id)) {
-                $this->handleJson([]);
-            } else {
-                $this->json['code'] = 1006;
-            }
-        }
-
-        return $this->returnJson();
     }
 
     /**

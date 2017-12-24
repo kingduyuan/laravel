@@ -65,7 +65,7 @@ class Controller extends \App\Http\Controllers\Controller
         if ($orderBy) {
             foreach ($orderBy as $value) {
                 $key = $value['column'];
-                if (isset($columns[$key])) {
+                if (!empty($columns[$key]) && !empty($columns[$key]['data'])) {
                     $order[$columns[$key]['data']] = $value['dir'];
                 }
             }
