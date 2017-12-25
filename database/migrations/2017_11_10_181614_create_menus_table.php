@@ -21,6 +21,7 @@ class CreateMenusTable extends Migration {
 			$table->string('permission_name', 50)->default('module')->comment('权限名称');
 			$table->integer('parent')->unsigned()->default(0)->comment('父级ID');
 			$table->boolean('status')->default(10)->comment('状态 10 启用 0 停用 -1 删除');
+			$table->smallInteger('sort')->default(100)->comment('排序');
 			$table->timestamps();
 		});
 	}
