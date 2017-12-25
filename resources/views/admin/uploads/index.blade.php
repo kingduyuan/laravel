@@ -161,7 +161,7 @@
                         var self = this;
                         layer.confirm("{{ trans('admin.confirmFileDelete')  }}", {
                             title: "{{ trans('admin.remind')  }}",
-                            icon: 0,
+                            icon: 0
                         }, function(index) {
                             layer.close(index);
                             for (var x in self.list) {
