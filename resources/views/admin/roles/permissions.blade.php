@@ -66,7 +66,10 @@ $breadCrumb = [
                     <div class="box-body">
                         @foreach($permissions as $value)
                             <label>
-                                <input type="checkbox" name="permissions[]" value="{{ $value->id }}">
+                                <input type="checkbox" name="permissions[]"
+                                       @permission($value->name)
+                                checked="checked"
+                                @endpermission value="{{ $value->id }}">
                                 {{ $value->description }} ({{ $value->name  }})
                             </label>
                         @endforeach

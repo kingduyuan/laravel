@@ -109,6 +109,11 @@ class RolesController extends Controller
      */
     public function permissions(Request $request, $id)
     {
+        if ($id == 1) {
+            $request->session()->flash('error', trans('admin.notAllowedSetAdmin'));
+            return  redirect('/admin/roles/index');
+        }
+
         // 查询角色
         $model = Role::findOrFail($id);
         if ($request->isMethod('post')) {

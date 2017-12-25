@@ -26,6 +26,8 @@ return [
     'remind' => '温馨提醒',
     'home' => '首页',
     'welcome' => '欢迎',
+    'notAllowedSetAdmin' => '不允许修改管理员权限',
+    'alert' => '提示信息！',
 
     // 文件上传
     'file' => '文件',

@@ -252,6 +252,13 @@ $strUserCreatedAt = $user && $user->created_at ? $user->created_at : date('Y-m-d
         </section>
         <!-- Main content -->
         <section class="content ">
+            @if (session('error'))
+            <div class="alert alert-danger alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"></i> {{trans('admin.alert')}} </h4>
+                {{ session('error') }}
+            </div>
+            @endif
             <!-- Your Page Content Here -->
             @yield('main-content')
         </section><!-- /.content -->
@@ -261,7 +268,7 @@ $strUserCreatedAt = $user && $user->created_at ? $user->created_at : date('Y-m-d
 
     <footer class="main-footer">
         <div class="pull-right hidden-xs">
-            {{ trans('admin.poweredBy') }} <a href="https://github.com/myloveGy"> liujinxing </a>
+            {{ trans('admin.poweredBy') }} <a target="_blank" href="https://github.com/myloveGy"> liujinxing </a>
         </div>
         <strong>Copyright &copy; 2016</strong>
     </footer>
